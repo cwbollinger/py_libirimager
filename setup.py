@@ -13,7 +13,7 @@ ext_modules = []
 
 if use_cython:
     ext_modules += [
-        Extension('ir_cam', ['ir_cam.pyx'],
+        Extension('ir_cam', ['cython/ir_cam.pyx'],
             libraries = ['irdirectsdk'],
             language='c++'
         )
@@ -21,14 +21,14 @@ if use_cython:
     cmdclass.update({ 'build_ext': build_ext })
 else:
     ext_modules += [
-        Extension('ir_cam', ['ir_cam.cpp'],
+        Extension('ir_cam', ['cython/ir_cam.cpp'],
             libraries = ['irdirectsdk'],
             language='c++'
         )
     ]
 
 setup(
-    name = "ir_imager",
+    name = "py_libirimager",
     version = "0.1",
     description = "Python wrapper for libirimager",
     url = "http://github.com/cwbollinger/py_ir_imager",
@@ -36,6 +36,6 @@ setup(
     author_email = "cwbollinger@gmail.com",
     cmdclass = cmdclass,
     ext_modules = ext_modules,
-    packages = ["ir_imager"],
+    packages = ["py_libirimager"],
     license = "MIT"
 )
