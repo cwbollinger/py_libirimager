@@ -3,12 +3,14 @@ cimport numpy as np
 
 cdef extern from "libirimager/direct_binding.h":
     int evo_irimager_usb_init(char* xml_config, char* formats_def, char* log_file)
+    int evo_irimager_set_temperature_range(int t_min, int t_max)
+    int evo_irimager_set_radiation_parameters(float emissivity, float transmissivity, float tAmbient)
+    int evo_irimager_terminate()
     int evo_irimager_get_thermal_image_size(int* w, int* h)
     int evo_irimager_get_thermal_image(int* w, int* h, unsigned short* data)
     int evo_irimager_get_palette_image_size(int* w, int* h)
     int evo_irimager_get_palette_image(int* w, int* h, unsigned char* data)
     int evo_irimager_get_thermal_palette_image(int w_t, int h_t, unsigned short* data_t, int w_p, int h_p, unsigned char* data_p)
-    int evo_irimager_terminate()
 
 
 class IrCamera(object):
@@ -25,6 +27,16 @@ class IrCamera(object):
 
     def __exit__(self, err_type, value, traceback):
         self.terminate_connection()
+
+    def set_radiation_parameters(self, emissivity, transmissivity, tAmbient):
+        retval = evo_irimager_set_radiation_parameters(emissivity, transmissivity, tAmbient)
+        if retval == -1:
+            raise RuntimeError('Error setting radiation parameters')
+
+    def set_thermal_range(self, t_min, t_max):
+        retval = evo_irimager_set_temperature_range(t_min, t_max)
+        if retval == -1:
+            raise RuntimeError('Error setting thermal range')
 
     def get_frame(self):
         cdef int w_t
@@ -44,7 +56,11 @@ class IrCamera(object):
         retval = evo_irimager_get_thermal_palette_image(w_t, h_t, &data_t[0], w_p, h_p, &data_p[0])
         if retval == -1:
             raise RuntimeError('Error getting image')
-        return data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
+        new_data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')
+        #      float t = ((((float)data[i])-1000.f))/10.f;
+        for i, val in enumerate(data_t):
+            new_data_t[i] = (float(val) - 1000.0) / 10.0
+        return new_data_t.reshape(h_t, w_t), data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
 
     def get_palette_frame(self):
         cdef int w

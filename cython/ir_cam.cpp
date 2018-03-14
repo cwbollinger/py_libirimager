@@ -764,7 +764,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "ir_cam.pyx",
+  "cython/ir_cam.pyx",
   "__init__.pxd",
   "type.pxd",
 };
@@ -1282,6 +1282,27 @@ static void __Pyx_RaiseBufferFallbackError(void);
 static void __Pyx_RaiseBufferIndexError(int axis);
 
 #define __Pyx_BufPtrStrided1d(type, buf, i0, s0) (type)((char*)buf + i0 * s0)
+/* PyIntBinop.proto */
+#if !CYTHON_COMPILING_IN_PYPY
+static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, long intval, int inplace);
+#else
+#define __Pyx_PyInt_AddObjC(op1, op2, intval, inplace)\
+    (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
+#endif
+
+/* pyobject_as_double.proto */
+static double __Pyx__PyObject_AsDouble(PyObject* obj);
+#if CYTHON_COMPILING_IN_PYPY
+#define __Pyx_PyObject_AsDouble(obj)\
+(likely(PyFloat_CheckExact(obj)) ? PyFloat_AS_DOUBLE(obj) :\
+ likely(PyInt_CheckExact(obj)) ?\
+ PyFloat_AsDouble(obj) : __Pyx__PyObject_AsDouble(obj))
+#else
+#define __Pyx_PyObject_AsDouble(obj)\
+((likely(PyFloat_CheckExact(obj))) ?\
+ PyFloat_AS_DOUBLE(obj) : __Pyx__PyObject_AsDouble(obj))
+#endif
+
 /* DictGetItem.proto */
 #if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
 static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key) {
@@ -1643,11 +1664,13 @@ int __pyx_module_is_main_ir_cam = 0;
 /* Implementation of 'ir_cam' */
 static PyObject *__pyx_builtin_object;
 static PyObject *__pyx_builtin_RuntimeError;
+static PyObject *__pyx_builtin_enumerate;
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_ImportError;
 static const char __pyx_k_C[] = "C";
 static const char __pyx_k_h[] = "h";
+static const char __pyx_k_i[] = "i";
 static const char __pyx_k_w[] = "w";
 static const char __pyx_k_np[] = "np";
 static const char __pyx_k_u1[] = "u1";
@@ -1655,6 +1678,7 @@ static const char __pyx_k_u2[] = "u2";
 static const char __pyx_k_doc[] = "__doc__";
 static const char __pyx_k_h_p[] = "h_p";
 static const char __pyx_k_h_t[] = "h_t";
+static const char __pyx_k_val[] = "val";
 static const char __pyx_k_w_p[] = "w_p";
 static const char __pyx_k_w_t[] = "w_t";
 static const char __pyx_k_data[] = "data";
@@ -1668,6 +1692,8 @@ static const char __pyx_k_enter[] = "__enter__";
 static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_order[] = "order";
 static const char __pyx_k_range[] = "range";
+static const char __pyx_k_t_max[] = "t_max";
+static const char __pyx_k_t_min[] = "t_min";
 static const char __pyx_k_value[] = "value";
 static const char __pyx_k_zeros[] = "zeros";
 static const char __pyx_k_data_p[] = "data_p";
@@ -1683,24 +1709,33 @@ static const char __pyx_k_IrCamera[] = "IrCamera";
 static const char __pyx_k_err_type[] = "err_type";
 static const char __pyx_k_null_ptr[] = "null_ptr";
 static const char __pyx_k_qualname[] = "__qualname__";
+static const char __pyx_k_tAmbient[] = "tAmbient";
+static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_get_frame[] = "get_frame";
 static const char __pyx_k_metaclass[] = "__metaclass__";
 static const char __pyx_k_traceback[] = "traceback";
 static const char __pyx_k_ValueError[] = "ValueError";
-static const char __pyx_k_ir_cam_pyx[] = "ir_cam.pyx";
+static const char __pyx_k_emissivity[] = "emissivity";
+static const char __pyx_k_new_data_t[] = "new_data_t";
 static const char __pyx_k_xml_config[] = "xml_config";
 static const char __pyx_k_ImportError[] = "ImportError";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
+static const char __pyx_k_transmissivity[] = "transmissivity";
 static const char __pyx_k_IrCamera___exit[] = "IrCamera.__exit__";
 static const char __pyx_k_IrCamera___init[] = "IrCamera.__init__";
 static const char __pyx_k_xml_config_file[] = "xml_config_file";
 static const char __pyx_k_IrCamera___enter[] = "IrCamera.__enter__";
+static const char __pyx_k_cython_ir_cam_pyx[] = "cython/ir_cam.pyx";
 static const char __pyx_k_get_palette_frame[] = "get_palette_frame";
+static const char __pyx_k_set_thermal_range[] = "set_thermal_range";
 static const char __pyx_k_IrCamera_get_frame[] = "IrCamera.get_frame";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_Error_getting_image[] = "Error getting image";
 static const char __pyx_k_terminate_connection[] = "terminate_connection";
+static const char __pyx_k_set_radiation_parameters[] = "set_radiation_parameters";
 static const char __pyx_k_IrCamera_get_palette_frame[] = "IrCamera.get_palette_frame";
+static const char __pyx_k_IrCamera_set_thermal_range[] = "IrCamera.set_thermal_range";
+static const char __pyx_k_Error_setting_thermal_range[] = "Error setting thermal range";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static const char __pyx_k_Error_initializing_connection[] = "Error initializing connection...";
 static const char __pyx_k_IrCamera_terminate_connection[] = "IrCamera.terminate_connection";
@@ -1708,8 +1743,10 @@ static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multia
 static const char __pyx_k_unknown_dtype_code_in_numpy_pxd[] = "unknown dtype code in numpy.pxd (%d)";
 static const char __pyx_k_Error_getting_palette_image_size[] = "Error getting palette image size...";
 static const char __pyx_k_Error_getting_thermal_image_size[] = "Error getting thermal image size...";
+static const char __pyx_k_Error_setting_radiation_paramete[] = "Error setting radiation parameters";
 static const char __pyx_k_Error_terminating_camera_connect[] = "Error terminating camera connection";
 static const char __pyx_k_Format_string_allocated_too_shor[] = "Format string allocated too short, see comment in numpy.pxd";
+static const char __pyx_k_IrCamera_set_radiation_parameter[] = "IrCamera.set_radiation_parameters";
 static const char __pyx_k_Non_native_byte_order_not_suppor[] = "Non-native byte order not supported";
 static const char __pyx_k_ndarray_is_not_Fortran_contiguou[] = "ndarray is not Fortran contiguous";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
@@ -1719,6 +1756,8 @@ static PyObject *__pyx_kp_s_Error_getting_image;
 static PyObject *__pyx_kp_s_Error_getting_palette_image_size;
 static PyObject *__pyx_kp_s_Error_getting_thermal_image_size;
 static PyObject *__pyx_kp_s_Error_initializing_connection;
+static PyObject *__pyx_kp_s_Error_setting_radiation_paramete;
+static PyObject *__pyx_kp_s_Error_setting_thermal_range;
 static PyObject *__pyx_kp_s_Error_terminating_camera_connect;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor_2;
@@ -1729,17 +1768,22 @@ static PyObject *__pyx_n_s_IrCamera___exit;
 static PyObject *__pyx_n_s_IrCamera___init;
 static PyObject *__pyx_n_s_IrCamera_get_frame;
 static PyObject *__pyx_n_s_IrCamera_get_palette_frame;
+static PyObject *__pyx_n_s_IrCamera_set_radiation_parameter;
+static PyObject *__pyx_n_s_IrCamera_set_thermal_range;
 static PyObject *__pyx_n_s_IrCamera_terminate_connection;
 static PyObject *__pyx_kp_u_Non_native_byte_order_not_suppor;
 static PyObject *__pyx_n_s_RuntimeError;
 static PyObject *__pyx_n_s_ValueError;
 static PyObject *__pyx_n_s_cline_in_traceback;
+static PyObject *__pyx_kp_s_cython_ir_cam_pyx;
 static PyObject *__pyx_n_s_data;
 static PyObject *__pyx_n_s_data_p;
 static PyObject *__pyx_n_s_data_t;
 static PyObject *__pyx_n_s_doc;
 static PyObject *__pyx_n_s_dtype;
+static PyObject *__pyx_n_s_emissivity;
 static PyObject *__pyx_n_s_enter;
+static PyObject *__pyx_n_s_enumerate;
 static PyObject *__pyx_n_s_err_type;
 static PyObject *__pyx_n_s_exit;
 static PyObject *__pyx_n_s_get_frame;
@@ -1747,15 +1791,16 @@ static PyObject *__pyx_n_s_get_palette_frame;
 static PyObject *__pyx_n_s_h;
 static PyObject *__pyx_n_s_h_p;
 static PyObject *__pyx_n_s_h_t;
+static PyObject *__pyx_n_s_i;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_init;
 static PyObject *__pyx_n_s_ir_cam;
-static PyObject *__pyx_kp_s_ir_cam_pyx;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_metaclass;
 static PyObject *__pyx_n_s_module;
 static PyObject *__pyx_kp_u_ndarray_is_not_C_contiguous;
 static PyObject *__pyx_kp_u_ndarray_is_not_Fortran_contiguou;
+static PyObject *__pyx_n_s_new_data_t;
 static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_null_ptr;
 static PyObject *__pyx_n_s_numpy;
@@ -1769,12 +1814,19 @@ static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_reshape;
 static PyObject *__pyx_n_s_retval;
 static PyObject *__pyx_n_s_self;
+static PyObject *__pyx_n_s_set_radiation_parameters;
+static PyObject *__pyx_n_s_set_thermal_range;
+static PyObject *__pyx_n_s_tAmbient;
+static PyObject *__pyx_n_s_t_max;
+static PyObject *__pyx_n_s_t_min;
 static PyObject *__pyx_n_s_terminate_connection;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_traceback;
+static PyObject *__pyx_n_s_transmissivity;
 static PyObject *__pyx_n_s_u1;
 static PyObject *__pyx_n_s_u2;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
+static PyObject *__pyx_n_s_val;
 static PyObject *__pyx_n_s_value;
 static PyObject *__pyx_n_s_w;
 static PyObject *__pyx_n_s_w_p;
@@ -1785,32 +1837,36 @@ static PyObject *__pyx_n_s_zeros;
 static PyObject *__pyx_pf_6ir_cam_8IrCamera___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_xml_config_file); /* proto */
 static PyObject *__pyx_pf_6ir_cam_8IrCamera_2__enter__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6ir_cam_8IrCamera_4__exit__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_err_type, CYTHON_UNUSED PyObject *__pyx_v_value, CYTHON_UNUSED PyObject *__pyx_v_traceback); /* proto */
-static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6ir_cam_8IrCamera_10terminate_connection(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6ir_cam_8IrCamera_6set_radiation_parameters(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self, PyObject *__pyx_v_emissivity, PyObject *__pyx_v_transmissivity, PyObject *__pyx_v_tAmbient); /* proto */
+static PyObject *__pyx_pf_6ir_cam_8IrCamera_8set_thermal_range(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self, PyObject *__pyx_v_t_min, PyObject *__pyx_v_t_max); /* proto */
+static PyObject *__pyx_pf_6ir_cam_8IrCamera_10get_frame(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6ir_cam_8IrCamera_12get_palette_frame(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6ir_cam_8IrCamera_14terminate_connection(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
+static PyObject *__pyx_int_0;
+static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_3;
 static PyObject *__pyx_int_neg_1;
 static PyObject *__pyx_tuple_;
-static PyObject *__pyx_slice__7;
-static PyObject *__pyx_slice__8;
-static PyObject *__pyx_slice__9;
 static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__3;
 static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__5;
 static PyObject *__pyx_tuple__6;
-static PyObject *__pyx_slice__14;
-static PyObject *__pyx_slice__15;
-static PyObject *__pyx_slice__16;
-static PyObject *__pyx_tuple__10;
-static PyObject *__pyx_tuple__11;
-static PyObject *__pyx_tuple__12;
+static PyObject *__pyx_tuple__7;
+static PyObject *__pyx_tuple__8;
+static PyObject *__pyx_tuple__9;
+static PyObject *__pyx_slice__10;
+static PyObject *__pyx_slice__11;
+static PyObject *__pyx_slice__12;
+static PyObject *__pyx_slice__17;
+static PyObject *__pyx_slice__18;
+static PyObject *__pyx_slice__19;
 static PyObject *__pyx_tuple__13;
-static PyObject *__pyx_tuple__17;
-static PyObject *__pyx_tuple__18;
-static PyObject *__pyx_tuple__19;
+static PyObject *__pyx_tuple__14;
+static PyObject *__pyx_tuple__15;
+static PyObject *__pyx_tuple__16;
 static PyObject *__pyx_tuple__20;
 static PyObject *__pyx_tuple__21;
 static PyObject *__pyx_tuple__22;
@@ -1821,19 +1877,26 @@ static PyObject *__pyx_tuple__26;
 static PyObject *__pyx_tuple__27;
 static PyObject *__pyx_tuple__28;
 static PyObject *__pyx_tuple__29;
+static PyObject *__pyx_tuple__30;
 static PyObject *__pyx_tuple__31;
-static PyObject *__pyx_tuple__33;
-static PyObject *__pyx_tuple__35;
-static PyObject *__pyx_tuple__37;
-static PyObject *__pyx_tuple__39;
-static PyObject *__pyx_codeobj__30;
-static PyObject *__pyx_codeobj__32;
-static PyObject *__pyx_codeobj__34;
-static PyObject *__pyx_codeobj__36;
-static PyObject *__pyx_codeobj__38;
-static PyObject *__pyx_codeobj__40;
+static PyObject *__pyx_tuple__32;
+static PyObject *__pyx_tuple__34;
+static PyObject *__pyx_tuple__36;
+static PyObject *__pyx_tuple__38;
+static PyObject *__pyx_tuple__40;
+static PyObject *__pyx_tuple__42;
+static PyObject *__pyx_tuple__44;
+static PyObject *__pyx_tuple__46;
+static PyObject *__pyx_codeobj__33;
+static PyObject *__pyx_codeobj__35;
+static PyObject *__pyx_codeobj__37;
+static PyObject *__pyx_codeobj__39;
+static PyObject *__pyx_codeobj__41;
+static PyObject *__pyx_codeobj__43;
+static PyObject *__pyx_codeobj__45;
+static PyObject *__pyx_codeobj__47;
 
-/* "ir_cam.pyx":16
+/* "ir_cam.pyx":18
  * class IrCamera(object):
  * 
  *     def __init__(self, xml_config_file):             # <<<<<<<<<<<<<<
@@ -1873,11 +1936,11 @@ static PyObject *__pyx_pw_6ir_cam_8IrCamera_1__init__(PyObject *__pyx_self, PyOb
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_xml_config_file)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, 1); __PYX_ERR(0, 16, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, 1); __PYX_ERR(0, 18, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 16, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 18, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -1890,7 +1953,7 @@ static PyObject *__pyx_pw_6ir_cam_8IrCamera_1__init__(PyObject *__pyx_self, PyOb
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 16, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 18, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("ir_cam.IrCamera.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1908,16 +1971,16 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera___init__(CYTHON_UNUSED PyObject *__p
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "ir_cam.pyx":17
+  /* "ir_cam.pyx":19
  * 
  *     def __init__(self, xml_config_file):
  *         self.xml_config = xml_config_file             # <<<<<<<<<<<<<<
  * 
  *     def __enter__(self):
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_xml_config, __pyx_v_xml_config_file) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_xml_config, __pyx_v_xml_config_file) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
 
-  /* "ir_cam.pyx":16
+  /* "ir_cam.pyx":18
  * class IrCamera(object):
  * 
  *     def __init__(self, xml_config_file):             # <<<<<<<<<<<<<<
@@ -1937,7 +2000,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera___init__(CYTHON_UNUSED PyObject *__p
   return __pyx_r;
 }
 
-/* "ir_cam.pyx":19
+/* "ir_cam.pyx":21
  *         self.xml_config = xml_config_file
  * 
  *     def __enter__(self):             # <<<<<<<<<<<<<<
@@ -1969,7 +2032,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_2__enter__(CYTHON_UNUSED PyObject *_
   int __pyx_t_3;
   __Pyx_RefNannySetupContext("__enter__", 0);
 
-  /* "ir_cam.pyx":20
+  /* "ir_cam.pyx":22
  * 
  *     def __enter__(self):
  *         cdef char* null_ptr = <char *> 0 # is there a better way to do this?             # <<<<<<<<<<<<<<
@@ -1978,20 +2041,20 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_2__enter__(CYTHON_UNUSED PyObject *_
  */
   __pyx_v_null_ptr = ((char *)0);
 
-  /* "ir_cam.pyx":21
+  /* "ir_cam.pyx":23
  *     def __enter__(self):
  *         cdef char* null_ptr = <char *> 0 # is there a better way to do this?
  *         retval = evo_irimager_usb_init(self.xml_config, null_ptr, null_ptr)             # <<<<<<<<<<<<<<
  *         if retval == -1:
  *             raise RuntimeError('Error initializing connection...')
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_xml_config); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_xml_config); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_AsWritableString(__pyx_t_1); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsWritableString(__pyx_t_1); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 23, __pyx_L1_error)
   __pyx_v_retval = evo_irimager_usb_init(__pyx_t_2, __pyx_v_null_ptr, __pyx_v_null_ptr);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "ir_cam.pyx":22
+  /* "ir_cam.pyx":24
  *         cdef char* null_ptr = <char *> 0 # is there a better way to do this?
  *         retval = evo_irimager_usb_init(self.xml_config, null_ptr, null_ptr)
  *         if retval == -1:             # <<<<<<<<<<<<<<
@@ -2001,20 +2064,20 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_2__enter__(CYTHON_UNUSED PyObject *_
   __pyx_t_3 = ((__pyx_v_retval == -1L) != 0);
   if (__pyx_t_3) {
 
-    /* "ir_cam.pyx":23
+    /* "ir_cam.pyx":25
  *         retval = evo_irimager_usb_init(self.xml_config, null_ptr, null_ptr)
  *         if retval == -1:
  *             raise RuntimeError('Error initializing connection...')             # <<<<<<<<<<<<<<
  *         return self
  * 
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 23, __pyx_L1_error)
+    __PYX_ERR(0, 25, __pyx_L1_error)
 
-    /* "ir_cam.pyx":22
+    /* "ir_cam.pyx":24
  *         cdef char* null_ptr = <char *> 0 # is there a better way to do this?
  *         retval = evo_irimager_usb_init(self.xml_config, null_ptr, null_ptr)
  *         if retval == -1:             # <<<<<<<<<<<<<<
@@ -2023,7 +2086,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_2__enter__(CYTHON_UNUSED PyObject *_
  */
   }
 
-  /* "ir_cam.pyx":24
+  /* "ir_cam.pyx":26
  *         if retval == -1:
  *             raise RuntimeError('Error initializing connection...')
  *         return self             # <<<<<<<<<<<<<<
@@ -2035,7 +2098,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_2__enter__(CYTHON_UNUSED PyObject *_
   __pyx_r = __pyx_v_self;
   goto __pyx_L0;
 
-  /* "ir_cam.pyx":19
+  /* "ir_cam.pyx":21
  *         self.xml_config = xml_config_file
  * 
  *     def __enter__(self):             # <<<<<<<<<<<<<<
@@ -2054,7 +2117,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_2__enter__(CYTHON_UNUSED PyObject *_
   return __pyx_r;
 }
 
-/* "ir_cam.pyx":26
+/* "ir_cam.pyx":28
  *         return self
  * 
  *     def __exit__(self, err_type, value, traceback):             # <<<<<<<<<<<<<<
@@ -2100,23 +2163,23 @@ static PyObject *__pyx_pw_6ir_cam_8IrCamera_5__exit__(PyObject *__pyx_self, PyOb
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_err_type)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 4, 4, 1); __PYX_ERR(0, 26, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 4, 4, 1); __PYX_ERR(0, 28, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_value)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 4, 4, 2); __PYX_ERR(0, 26, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 4, 4, 2); __PYX_ERR(0, 28, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_traceback)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 4, 4, 3); __PYX_ERR(0, 26, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__exit__", 1, 4, 4, 3); __PYX_ERR(0, 28, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__exit__") < 0)) __PYX_ERR(0, 26, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__exit__") < 0)) __PYX_ERR(0, 28, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -2133,7 +2196,7 @@ static PyObject *__pyx_pw_6ir_cam_8IrCamera_5__exit__(PyObject *__pyx_self, PyOb
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__exit__", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 26, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__exit__", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 28, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("ir_cam.IrCamera.__exit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2154,14 +2217,14 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_4__exit__(CYTHON_UNUSED PyObject *__
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__exit__", 0);
 
-  /* "ir_cam.pyx":27
+  /* "ir_cam.pyx":29
  * 
  *     def __exit__(self, err_type, value, traceback):
  *         self.terminate_connection()             # <<<<<<<<<<<<<<
  * 
- *     def get_frame(self):
+ *     def set_radiation_parameters(self, emissivity, transmissivity, tAmbient):
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_terminate_connection); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_terminate_connection); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -2174,16 +2237,16 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_4__exit__(CYTHON_UNUSED PyObject *__
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "ir_cam.pyx":26
+  /* "ir_cam.pyx":28
  *         return self
  * 
  *     def __exit__(self, err_type, value, traceback):             # <<<<<<<<<<<<<<
@@ -2206,8 +2269,331 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_4__exit__(CYTHON_UNUSED PyObject *__
   return __pyx_r;
 }
 
-/* "ir_cam.pyx":29
+/* "ir_cam.pyx":31
  *         self.terminate_connection()
+ * 
+ *     def set_radiation_parameters(self, emissivity, transmissivity, tAmbient):             # <<<<<<<<<<<<<<
+ *         retval = evo_irimager_set_radiation_parameters(emissivity, transmissivity, tAmbient)
+ *         if retval == -1:
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6ir_cam_8IrCamera_7set_radiation_parameters(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6ir_cam_8IrCamera_7set_radiation_parameters = {"set_radiation_parameters", (PyCFunction)__pyx_pw_6ir_cam_8IrCamera_7set_radiation_parameters, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6ir_cam_8IrCamera_7set_radiation_parameters(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  CYTHON_UNUSED PyObject *__pyx_v_self = 0;
+  PyObject *__pyx_v_emissivity = 0;
+  PyObject *__pyx_v_transmissivity = 0;
+  PyObject *__pyx_v_tAmbient = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("set_radiation_parameters (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_self,&__pyx_n_s_emissivity,&__pyx_n_s_transmissivity,&__pyx_n_s_tAmbient,0};
+    PyObject* values[4] = {0,0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_self)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_emissivity)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("set_radiation_parameters", 1, 4, 4, 1); __PYX_ERR(0, 31, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_transmissivity)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("set_radiation_parameters", 1, 4, 4, 2); __PYX_ERR(0, 31, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_tAmbient)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("set_radiation_parameters", 1, 4, 4, 3); __PYX_ERR(0, 31, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "set_radiation_parameters") < 0)) __PYX_ERR(0, 31, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+      values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+    }
+    __pyx_v_self = values[0];
+    __pyx_v_emissivity = values[1];
+    __pyx_v_transmissivity = values[2];
+    __pyx_v_tAmbient = values[3];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("set_radiation_parameters", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 31, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("ir_cam.IrCamera.set_radiation_parameters", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6ir_cam_8IrCamera_6set_radiation_parameters(__pyx_self, __pyx_v_self, __pyx_v_emissivity, __pyx_v_transmissivity, __pyx_v_tAmbient);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6ir_cam_8IrCamera_6set_radiation_parameters(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self, PyObject *__pyx_v_emissivity, PyObject *__pyx_v_transmissivity, PyObject *__pyx_v_tAmbient) {
+  int __pyx_v_retval;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  float __pyx_t_1;
+  float __pyx_t_2;
+  float __pyx_t_3;
+  int __pyx_t_4;
+  PyObject *__pyx_t_5 = NULL;
+  __Pyx_RefNannySetupContext("set_radiation_parameters", 0);
+
+  /* "ir_cam.pyx":32
+ * 
+ *     def set_radiation_parameters(self, emissivity, transmissivity, tAmbient):
+ *         retval = evo_irimager_set_radiation_parameters(emissivity, transmissivity, tAmbient)             # <<<<<<<<<<<<<<
+ *         if retval == -1:
+ *             raise RuntimeError('Error setting radiation parameters')
+ */
+  __pyx_t_1 = __pyx_PyFloat_AsFloat(__pyx_v_emissivity); if (unlikely((__pyx_t_1 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_v_transmissivity); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_t_3 = __pyx_PyFloat_AsFloat(__pyx_v_tAmbient); if (unlikely((__pyx_t_3 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_v_retval = evo_irimager_set_radiation_parameters(__pyx_t_1, __pyx_t_2, __pyx_t_3);
+
+  /* "ir_cam.pyx":33
+ *     def set_radiation_parameters(self, emissivity, transmissivity, tAmbient):
+ *         retval = evo_irimager_set_radiation_parameters(emissivity, transmissivity, tAmbient)
+ *         if retval == -1:             # <<<<<<<<<<<<<<
+ *             raise RuntimeError('Error setting radiation parameters')
+ * 
+ */
+  __pyx_t_4 = ((__pyx_v_retval == -1L) != 0);
+  if (__pyx_t_4) {
+
+    /* "ir_cam.pyx":34
+ *         retval = evo_irimager_set_radiation_parameters(emissivity, transmissivity, tAmbient)
+ *         if retval == -1:
+ *             raise RuntimeError('Error setting radiation parameters')             # <<<<<<<<<<<<<<
+ * 
+ *     def set_thermal_range(self, t_min, t_max):
+ */
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 34, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_Raise(__pyx_t_5, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __PYX_ERR(0, 34, __pyx_L1_error)
+
+    /* "ir_cam.pyx":33
+ *     def set_radiation_parameters(self, emissivity, transmissivity, tAmbient):
+ *         retval = evo_irimager_set_radiation_parameters(emissivity, transmissivity, tAmbient)
+ *         if retval == -1:             # <<<<<<<<<<<<<<
+ *             raise RuntimeError('Error setting radiation parameters')
+ * 
+ */
+  }
+
+  /* "ir_cam.pyx":31
+ *         self.terminate_connection()
+ * 
+ *     def set_radiation_parameters(self, emissivity, transmissivity, tAmbient):             # <<<<<<<<<<<<<<
+ *         retval = evo_irimager_set_radiation_parameters(emissivity, transmissivity, tAmbient)
+ *         if retval == -1:
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_AddTraceback("ir_cam.IrCamera.set_radiation_parameters", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "ir_cam.pyx":36
+ *             raise RuntimeError('Error setting radiation parameters')
+ * 
+ *     def set_thermal_range(self, t_min, t_max):             # <<<<<<<<<<<<<<
+ *         retval = evo_irimager_set_temperature_range(t_min, t_max)
+ *         if retval == -1:
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6ir_cam_8IrCamera_9set_thermal_range(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_6ir_cam_8IrCamera_9set_thermal_range = {"set_thermal_range", (PyCFunction)__pyx_pw_6ir_cam_8IrCamera_9set_thermal_range, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_6ir_cam_8IrCamera_9set_thermal_range(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  CYTHON_UNUSED PyObject *__pyx_v_self = 0;
+  PyObject *__pyx_v_t_min = 0;
+  PyObject *__pyx_v_t_max = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("set_thermal_range (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_self,&__pyx_n_s_t_min,&__pyx_n_s_t_max,0};
+    PyObject* values[3] = {0,0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_self)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_t_min)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("set_thermal_range", 1, 3, 3, 1); __PYX_ERR(0, 36, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_t_max)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("set_thermal_range", 1, 3, 3, 2); __PYX_ERR(0, 36, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "set_thermal_range") < 0)) __PYX_ERR(0, 36, __pyx_L3_error)
+      }
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+    }
+    __pyx_v_self = values[0];
+    __pyx_v_t_min = values[1];
+    __pyx_v_t_max = values[2];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("set_thermal_range", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 36, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("ir_cam.IrCamera.set_thermal_range", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6ir_cam_8IrCamera_8set_thermal_range(__pyx_self, __pyx_v_self, __pyx_v_t_min, __pyx_v_t_max);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6ir_cam_8IrCamera_8set_thermal_range(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self, PyObject *__pyx_v_t_min, PyObject *__pyx_v_t_max) {
+  int __pyx_v_retval;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  int __pyx_t_3;
+  PyObject *__pyx_t_4 = NULL;
+  __Pyx_RefNannySetupContext("set_thermal_range", 0);
+
+  /* "ir_cam.pyx":37
+ * 
+ *     def set_thermal_range(self, t_min, t_max):
+ *         retval = evo_irimager_set_temperature_range(t_min, t_max)             # <<<<<<<<<<<<<<
+ *         if retval == -1:
+ *             raise RuntimeError('Error setting thermal range')
+ */
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_t_min); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_t_max); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_v_retval = evo_irimager_set_temperature_range(__pyx_t_1, __pyx_t_2);
+
+  /* "ir_cam.pyx":38
+ *     def set_thermal_range(self, t_min, t_max):
+ *         retval = evo_irimager_set_temperature_range(t_min, t_max)
+ *         if retval == -1:             # <<<<<<<<<<<<<<
+ *             raise RuntimeError('Error setting thermal range')
+ * 
+ */
+  __pyx_t_3 = ((__pyx_v_retval == -1L) != 0);
+  if (__pyx_t_3) {
+
+    /* "ir_cam.pyx":39
+ *         retval = evo_irimager_set_temperature_range(t_min, t_max)
+ *         if retval == -1:
+ *             raise RuntimeError('Error setting thermal range')             # <<<<<<<<<<<<<<
+ * 
+ *     def get_frame(self):
+ */
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 39, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_Raise(__pyx_t_4, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __PYX_ERR(0, 39, __pyx_L1_error)
+
+    /* "ir_cam.pyx":38
+ *     def set_thermal_range(self, t_min, t_max):
+ *         retval = evo_irimager_set_temperature_range(t_min, t_max)
+ *         if retval == -1:             # <<<<<<<<<<<<<<
+ *             raise RuntimeError('Error setting thermal range')
+ * 
+ */
+  }
+
+  /* "ir_cam.pyx":36
+ *             raise RuntimeError('Error setting radiation parameters')
+ * 
+ *     def set_thermal_range(self, t_min, t_max):             # <<<<<<<<<<<<<<
+ *         retval = evo_irimager_set_temperature_range(t_min, t_max)
+ *         if retval == -1:
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("ir_cam.IrCamera.set_thermal_range", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "ir_cam.pyx":41
+ *             raise RuntimeError('Error setting thermal range')
  * 
  *     def get_frame(self):             # <<<<<<<<<<<<<<
  *         cdef int w_t
@@ -2215,20 +2601,20 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_4__exit__(CYTHON_UNUSED PyObject *__
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6ir_cam_8IrCamera_7get_frame(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
-static PyMethodDef __pyx_mdef_6ir_cam_8IrCamera_7get_frame = {"get_frame", (PyCFunction)__pyx_pw_6ir_cam_8IrCamera_7get_frame, METH_O, 0};
-static PyObject *__pyx_pw_6ir_cam_8IrCamera_7get_frame(PyObject *__pyx_self, PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_6ir_cam_8IrCamera_11get_frame(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
+static PyMethodDef __pyx_mdef_6ir_cam_8IrCamera_11get_frame = {"get_frame", (PyCFunction)__pyx_pw_6ir_cam_8IrCamera_11get_frame, METH_O, 0};
+static PyObject *__pyx_pw_6ir_cam_8IrCamera_11get_frame(PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_frame (wrapper)", 0);
-  __pyx_r = __pyx_pf_6ir_cam_8IrCamera_6get_frame(__pyx_self, ((PyObject *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6ir_cam_8IrCamera_10get_frame(__pyx_self, ((PyObject *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self) {
+static PyObject *__pyx_pf_6ir_cam_8IrCamera_10get_frame(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self) {
   int __pyx_v_w_t;
   int __pyx_v_h_t;
   int __pyx_v_w_p;
@@ -2236,6 +2622,9 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
   PyArrayObject *__pyx_v_data_t = 0;
   PyArrayObject *__pyx_v_data_p = 0;
   int __pyx_v_retval;
+  PyObject *__pyx_v_new_data_t = NULL;
+  PyObject *__pyx_v_i = NULL;
+  PyObject *__pyx_v_val = NULL;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_data_p;
   __Pyx_Buffer __pyx_pybuffer_data_p;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_data_t;
@@ -2255,9 +2644,13 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
   PyArrayObject *__pyx_t_11 = NULL;
   Py_ssize_t __pyx_t_12;
   Py_ssize_t __pyx_t_13;
-  PyObject *__pyx_t_14 = NULL;
-  PyObject *__pyx_t_15 = NULL;
-  PyObject *__pyx_t_16 = NULL;
+  Py_ssize_t __pyx_t_14;
+  PyObject *(*__pyx_t_15)(PyObject *);
+  double __pyx_t_16;
+  PyObject *__pyx_t_17 = NULL;
+  PyObject *__pyx_t_18 = NULL;
+  PyObject *__pyx_t_19 = NULL;
+  PyObject *__pyx_t_20 = NULL;
   __Pyx_RefNannySetupContext("get_frame", 0);
   __pyx_pybuffer_data_t.pybuffer.buf = NULL;
   __pyx_pybuffer_data_t.refcount = 0;
@@ -2268,7 +2661,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
   __pyx_pybuffernd_data_p.data = NULL;
   __pyx_pybuffernd_data_p.rcbuffer = &__pyx_pybuffer_data_p;
 
-  /* "ir_cam.pyx":36
+  /* "ir_cam.pyx":48
  *         cdef np.ndarray[np.uint16_t, ndim=1] data_t
  *         cdef np.ndarray[np.uint8_t, ndim=1] data_p
  *         retval = evo_irimager_get_thermal_image_size(&w_t, &h_t)             # <<<<<<<<<<<<<<
@@ -2277,7 +2670,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
  */
   __pyx_v_retval = evo_irimager_get_thermal_image_size((&__pyx_v_w_t), (&__pyx_v_h_t));
 
-  /* "ir_cam.pyx":37
+  /* "ir_cam.pyx":49
  *         cdef np.ndarray[np.uint8_t, ndim=1] data_p
  *         retval = evo_irimager_get_thermal_image_size(&w_t, &h_t)
  *         if retval == -1:             # <<<<<<<<<<<<<<
@@ -2287,20 +2680,20 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
   __pyx_t_1 = ((__pyx_v_retval == -1L) != 0);
   if (__pyx_t_1) {
 
-    /* "ir_cam.pyx":38
+    /* "ir_cam.pyx":50
  *         retval = evo_irimager_get_thermal_image_size(&w_t, &h_t)
  *         if retval == -1:
  *             raise RuntimeError('Error getting thermal image size...')             # <<<<<<<<<<<<<<
  *         retval = evo_irimager_get_palette_image_size(&w_p, &h_p)
  *         if retval == -1:
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 38, __pyx_L1_error)
+    __PYX_ERR(0, 50, __pyx_L1_error)
 
-    /* "ir_cam.pyx":37
+    /* "ir_cam.pyx":49
  *         cdef np.ndarray[np.uint8_t, ndim=1] data_p
  *         retval = evo_irimager_get_thermal_image_size(&w_t, &h_t)
  *         if retval == -1:             # <<<<<<<<<<<<<<
@@ -2309,7 +2702,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
  */
   }
 
-  /* "ir_cam.pyx":39
+  /* "ir_cam.pyx":51
  *         if retval == -1:
  *             raise RuntimeError('Error getting thermal image size...')
  *         retval = evo_irimager_get_palette_image_size(&w_p, &h_p)             # <<<<<<<<<<<<<<
@@ -2318,7 +2711,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
  */
   __pyx_v_retval = evo_irimager_get_palette_image_size((&__pyx_v_w_p), (&__pyx_v_h_p));
 
-  /* "ir_cam.pyx":40
+  /* "ir_cam.pyx":52
  *             raise RuntimeError('Error getting thermal image size...')
  *         retval = evo_irimager_get_palette_image_size(&w_p, &h_p)
  *         if retval == -1:             # <<<<<<<<<<<<<<
@@ -2328,20 +2721,20 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
   __pyx_t_1 = ((__pyx_v_retval == -1L) != 0);
   if (__pyx_t_1) {
 
-    /* "ir_cam.pyx":41
+    /* "ir_cam.pyx":53
  *         retval = evo_irimager_get_palette_image_size(&w_p, &h_p)
  *         if retval == -1:
  *             raise RuntimeError('Error getting palette image size...')             # <<<<<<<<<<<<<<
  *         data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')
  *         data_p = np.zeros(w_p*h_p*3, dtype=np.dtype('u1'), order='C')
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 41, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 41, __pyx_L1_error)
+    __PYX_ERR(0, 53, __pyx_L1_error)
 
-    /* "ir_cam.pyx":40
+    /* "ir_cam.pyx":52
  *             raise RuntimeError('Error getting thermal image size...')
  *         retval = evo_irimager_get_palette_image_size(&w_p, &h_p)
  *         if retval == -1:             # <<<<<<<<<<<<<<
@@ -2350,38 +2743,38 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
  */
   }
 
-  /* "ir_cam.pyx":42
+  /* "ir_cam.pyx":54
  *         if retval == -1:
  *             raise RuntimeError('Error getting palette image size...')
  *         data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')             # <<<<<<<<<<<<<<
  *         data_p = np.zeros(w_p*h_p*3, dtype=np.dtype('u1'), order='C')
  *         retval = evo_irimager_get_thermal_palette_image(w_t, h_t, &data_t[0], w_p, h_p, &data_p[0])
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_int((__pyx_v_w_t * __pyx_v_h_t)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int((__pyx_v_w_t * __pyx_v_h_t)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5numpy_dtype), __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5numpy_dtype), __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 42, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 42, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 42, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 42, __pyx_L1_error)
+  if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 54, __pyx_L1_error)
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_5);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -2398,44 +2791,44 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
       __pyx_t_8 = __pyx_t_9 = __pyx_t_10 = 0;
     }
     __pyx_pybuffernd_data_t.diminfo[0].strides = __pyx_pybuffernd_data_t.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_data_t.diminfo[0].shape = __pyx_pybuffernd_data_t.rcbuffer->pybuffer.shape[0];
-    if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 42, __pyx_L1_error)
+    if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 54, __pyx_L1_error)
   }
   __pyx_t_6 = 0;
   __pyx_v_data_t = ((PyArrayObject *)__pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "ir_cam.pyx":43
+  /* "ir_cam.pyx":55
  *             raise RuntimeError('Error getting palette image size...')
  *         data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')
  *         data_p = np.zeros(w_p*h_p*3, dtype=np.dtype('u1'), order='C')             # <<<<<<<<<<<<<<
  *         retval = evo_irimager_get_thermal_palette_image(w_t, h_t, &data_t[0], w_p, h_p, &data_p[0])
  *         if retval == -1:
  */
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyInt_From_long(((__pyx_v_w_p * __pyx_v_h_p) * 3)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_long(((__pyx_v_w_p * __pyx_v_h_p) * 3)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_5);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
   __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5numpy_dtype), __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5numpy_dtype), __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(0, 43, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 43, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 43, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 55, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 43, __pyx_L1_error)
+  if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 55, __pyx_L1_error)
   __pyx_t_11 = ((PyArrayObject *)__pyx_t_3);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -2452,13 +2845,13 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
       __pyx_t_10 = __pyx_t_9 = __pyx_t_8 = 0;
     }
     __pyx_pybuffernd_data_p.diminfo[0].strides = __pyx_pybuffernd_data_p.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_data_p.diminfo[0].shape = __pyx_pybuffernd_data_p.rcbuffer->pybuffer.shape[0];
-    if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 43, __pyx_L1_error)
+    if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 55, __pyx_L1_error)
   }
   __pyx_t_11 = 0;
   __pyx_v_data_p = ((PyArrayObject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "ir_cam.pyx":44
+  /* "ir_cam.pyx":56
  *         data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')
  *         data_p = np.zeros(w_p*h_p*3, dtype=np.dtype('u1'), order='C')
  *         retval = evo_irimager_get_thermal_palette_image(w_t, h_t, &data_t[0], w_p, h_p, &data_p[0])             # <<<<<<<<<<<<<<
@@ -2473,7 +2866,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
   } else if (unlikely(__pyx_t_12 >= __pyx_pybuffernd_data_t.diminfo[0].shape)) __pyx_t_7 = 0;
   if (unlikely(__pyx_t_7 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_7);
-    __PYX_ERR(0, 44, __pyx_L1_error)
+    __PYX_ERR(0, 56, __pyx_L1_error)
   }
   __pyx_t_13 = 0;
   __pyx_t_7 = -1;
@@ -2483,180 +2876,354 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
   } else if (unlikely(__pyx_t_13 >= __pyx_pybuffernd_data_p.diminfo[0].shape)) __pyx_t_7 = 0;
   if (unlikely(__pyx_t_7 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_7);
-    __PYX_ERR(0, 44, __pyx_L1_error)
+    __PYX_ERR(0, 56, __pyx_L1_error)
   }
   __pyx_v_retval = evo_irimager_get_thermal_palette_image(__pyx_v_w_t, __pyx_v_h_t, (&(*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_uint16_t *, __pyx_pybuffernd_data_t.rcbuffer->pybuffer.buf, __pyx_t_12, __pyx_pybuffernd_data_t.diminfo[0].strides))), __pyx_v_w_p, __pyx_v_h_p, (&(*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_uint8_t *, __pyx_pybuffernd_data_p.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_data_p.diminfo[0].strides))));
 
-  /* "ir_cam.pyx":45
+  /* "ir_cam.pyx":57
  *         data_p = np.zeros(w_p*h_p*3, dtype=np.dtype('u1'), order='C')
  *         retval = evo_irimager_get_thermal_palette_image(w_t, h_t, &data_t[0], w_p, h_p, &data_p[0])
  *         if retval == -1:             # <<<<<<<<<<<<<<
  *             raise RuntimeError('Error getting image')
- *         return data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
+ *         new_data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')
  */
   __pyx_t_1 = ((__pyx_v_retval == -1L) != 0);
   if (__pyx_t_1) {
 
-    /* "ir_cam.pyx":46
+    /* "ir_cam.pyx":58
  *         retval = evo_irimager_get_thermal_palette_image(w_t, h_t, &data_t[0], w_p, h_p, &data_p[0])
  *         if retval == -1:
  *             raise RuntimeError('Error getting image')             # <<<<<<<<<<<<<<
- *         return data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
- * 
+ *         new_data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')
+ *         #      float t = ((((float)data[i])-1000.f))/10.f;
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 46, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 58, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 46, __pyx_L1_error)
+    __PYX_ERR(0, 58, __pyx_L1_error)
 
-    /* "ir_cam.pyx":45
+    /* "ir_cam.pyx":57
  *         data_p = np.zeros(w_p*h_p*3, dtype=np.dtype('u1'), order='C')
  *         retval = evo_irimager_get_thermal_palette_image(w_t, h_t, &data_t[0], w_p, h_p, &data_p[0])
  *         if retval == -1:             # <<<<<<<<<<<<<<
  *             raise RuntimeError('Error getting image')
- *         return data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
+ *         new_data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')
  */
   }
 
-  /* "ir_cam.pyx":47
+  /* "ir_cam.pyx":59
  *         if retval == -1:
  *             raise RuntimeError('Error getting image')
- *         return data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]             # <<<<<<<<<<<<<<
+ *         new_data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')             # <<<<<<<<<<<<<<
+ *         #      float t = ((((float)data[i])-1000.f))/10.f;
+ *         for i, val in enumerate(data_t):
+ */
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = __Pyx_PyInt_From_int((__pyx_v_w_t * __pyx_v_h_t)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
+  __pyx_t_3 = 0;
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5numpy_dtype), __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_2) < 0) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_v_new_data_t = __pyx_t_2;
+  __pyx_t_2 = 0;
+
+  /* "ir_cam.pyx":61
+ *         new_data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')
+ *         #      float t = ((((float)data[i])-1000.f))/10.f;
+ *         for i, val in enumerate(data_t):             # <<<<<<<<<<<<<<
+ *             new_data_t[i] = (float(val) - 1000.0) / 10.0
+ *         return new_data_t.reshape(h_t, w_t), data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
+ */
+  __Pyx_INCREF(__pyx_int_0);
+  __pyx_t_2 = __pyx_int_0;
+  if (likely(PyList_CheckExact(((PyObject *)__pyx_v_data_t))) || PyTuple_CheckExact(((PyObject *)__pyx_v_data_t))) {
+    __pyx_t_3 = ((PyObject *)__pyx_v_data_t); __Pyx_INCREF(__pyx_t_3); __pyx_t_14 = 0;
+    __pyx_t_15 = NULL;
+  } else {
+    __pyx_t_14 = -1; __pyx_t_3 = PyObject_GetIter(((PyObject *)__pyx_v_data_t)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 61, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_15 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 61, __pyx_L1_error)
+  }
+  for (;;) {
+    if (likely(!__pyx_t_15)) {
+      if (likely(PyList_CheckExact(__pyx_t_3))) {
+        if (__pyx_t_14 >= PyList_GET_SIZE(__pyx_t_3)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_14); __Pyx_INCREF(__pyx_t_4); __pyx_t_14++; if (unlikely(0 < 0)) __PYX_ERR(0, 61, __pyx_L1_error)
+        #else
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_3, __pyx_t_14); __pyx_t_14++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 61, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        #endif
+      } else {
+        if (__pyx_t_14 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_14); __Pyx_INCREF(__pyx_t_4); __pyx_t_14++; if (unlikely(0 < 0)) __PYX_ERR(0, 61, __pyx_L1_error)
+        #else
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_3, __pyx_t_14); __pyx_t_14++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 61, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        #endif
+      }
+    } else {
+      __pyx_t_4 = __pyx_t_15(__pyx_t_3);
+      if (unlikely(!__pyx_t_4)) {
+        PyObject* exc_type = PyErr_Occurred();
+        if (exc_type) {
+          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+          else __PYX_ERR(0, 61, __pyx_L1_error)
+        }
+        break;
+      }
+      __Pyx_GOTREF(__pyx_t_4);
+    }
+    __Pyx_XDECREF_SET(__pyx_v_val, __pyx_t_4);
+    __pyx_t_4 = 0;
+    __Pyx_INCREF(__pyx_t_2);
+    __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_2);
+    __pyx_t_4 = __Pyx_PyInt_AddObjC(__pyx_t_2, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 61, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_2);
+    __pyx_t_2 = __pyx_t_4;
+    __pyx_t_4 = 0;
+
+    /* "ir_cam.pyx":62
+ *         #      float t = ((((float)data[i])-1000.f))/10.f;
+ *         for i, val in enumerate(data_t):
+ *             new_data_t[i] = (float(val) - 1000.0) / 10.0             # <<<<<<<<<<<<<<
+ *         return new_data_t.reshape(h_t, w_t), data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
+ * 
+ */
+    __pyx_t_16 = __Pyx_PyObject_AsDouble(__pyx_v_val); if (unlikely(__pyx_t_16 == ((double)((double)-1)) && PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L1_error)
+    __pyx_t_4 = PyFloat_FromDouble(((__pyx_t_16 - 1000.0) / 10.0)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 62, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    if (unlikely(PyObject_SetItem(__pyx_v_new_data_t, __pyx_v_i, __pyx_t_4) < 0)) __PYX_ERR(0, 62, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+    /* "ir_cam.pyx":61
+ *         new_data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')
+ *         #      float t = ((((float)data[i])-1000.f))/10.f;
+ *         for i, val in enumerate(data_t):             # <<<<<<<<<<<<<<
+ *             new_data_t[i] = (float(val) - 1000.0) / 10.0
+ *         return new_data_t.reshape(h_t, w_t), data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
+ */
+  }
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "ir_cam.pyx":63
+ *         for i, val in enumerate(data_t):
+ *             new_data_t[i] = (float(val) - 1000.0) / 10.0
+ *         return new_data_t.reshape(h_t, w_t), data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]             # <<<<<<<<<<<<<<
  * 
  *     def get_palette_frame(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_data_t), __pyx_n_s_reshape); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_new_data_t, __pyx_n_s_reshape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_h_t); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_w_t); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_h_t); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 47, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_w_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_14 = NULL;
+  __pyx_t_17 = NULL;
   __pyx_t_7 = 0;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-    __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_5);
-    if (likely(__pyx_t_14)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_14);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_17 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_17)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_17);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_5, function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
       __pyx_t_7 = 1;
     }
   }
   #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_5)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_14, __pyx_t_4, __pyx_t_2};
-    __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-    __Pyx_GOTREF(__pyx_t_3);
+  if (PyFunction_Check(__pyx_t_3)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_17, __pyx_t_4, __pyx_t_5};
+    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_17); __pyx_t_17 = 0;
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_14, __pyx_t_4, __pyx_t_2};
-    __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-    __Pyx_GOTREF(__pyx_t_3);
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_17, __pyx_t_4, __pyx_t_5};
+    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_17); __pyx_t_17 = 0;
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else
   #endif
   {
-    __pyx_t_15 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_15);
-    if (__pyx_t_14) {
-      __Pyx_GIVEREF(__pyx_t_14); PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_14); __pyx_t_14 = NULL;
+    __pyx_t_18 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_18);
+    if (__pyx_t_17) {
+      __Pyx_GIVEREF(__pyx_t_17); PyTuple_SET_ITEM(__pyx_t_18, 0, __pyx_t_17); __pyx_t_17 = NULL;
     }
     __Pyx_GIVEREF(__pyx_t_4);
-    PyTuple_SET_ITEM(__pyx_t_15, 0+__pyx_t_7, __pyx_t_4);
-    __Pyx_GIVEREF(__pyx_t_2);
-    PyTuple_SET_ITEM(__pyx_t_15, 1+__pyx_t_7, __pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_18, 0+__pyx_t_7, __pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_5);
+    PyTuple_SET_ITEM(__pyx_t_18, 1+__pyx_t_7, __pyx_t_5);
     __pyx_t_4 = 0;
-    __pyx_t_2 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_15, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
+    __pyx_t_5 = 0;
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_18, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
   }
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_15 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_data_p), __pyx_n_s_reshape); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 47, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_15);
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_h_p); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_w_p); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_18 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_data_t), __pyx_n_s_reshape); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_18);
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_h_t); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_w_t); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_14 = NULL;
+  __pyx_t_17 = NULL;
   __pyx_t_7 = 0;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_15))) {
-    __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_15);
-    if (likely(__pyx_t_14)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_15);
-      __Pyx_INCREF(__pyx_t_14);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_18))) {
+    __pyx_t_17 = PyMethod_GET_SELF(__pyx_t_18);
+    if (likely(__pyx_t_17)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_18);
+      __Pyx_INCREF(__pyx_t_17);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_15, function);
+      __Pyx_DECREF_SET(__pyx_t_18, function);
       __pyx_t_7 = 1;
     }
   }
   #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_15)) {
-    PyObject *__pyx_temp[4] = {__pyx_t_14, __pyx_t_2, __pyx_t_4, __pyx_int_3};
-    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_15, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyFunction_Check(__pyx_t_18)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_17, __pyx_t_5, __pyx_t_4};
+    __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_18, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_17); __pyx_t_17 = 0;
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_15)) {
-    PyObject *__pyx_temp[4] = {__pyx_t_14, __pyx_t_2, __pyx_t_4, __pyx_int_3};
-    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_15, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_18)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_17, __pyx_t_5, __pyx_t_4};
+    __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_18, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_17); __pyx_t_17 = 0;
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else
   #endif
   {
-    __pyx_t_16 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_16);
-    if (__pyx_t_14) {
-      __Pyx_GIVEREF(__pyx_t_14); PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_14); __pyx_t_14 = NULL;
+    __pyx_t_19 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_19);
+    if (__pyx_t_17) {
+      __Pyx_GIVEREF(__pyx_t_17); PyTuple_SET_ITEM(__pyx_t_19, 0, __pyx_t_17); __pyx_t_17 = NULL;
     }
-    __Pyx_GIVEREF(__pyx_t_2);
-    PyTuple_SET_ITEM(__pyx_t_16, 0+__pyx_t_7, __pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_5);
+    PyTuple_SET_ITEM(__pyx_t_19, 0+__pyx_t_7, __pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_4);
-    PyTuple_SET_ITEM(__pyx_t_16, 1+__pyx_t_7, __pyx_t_4);
+    PyTuple_SET_ITEM(__pyx_t_19, 1+__pyx_t_7, __pyx_t_4);
+    __pyx_t_5 = 0;
+    __pyx_t_4 = 0;
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_18, __pyx_t_19, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
+  __pyx_t_19 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_data_p), __pyx_n_s_reshape); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_19);
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_h_p); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_w_p); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_17 = NULL;
+  __pyx_t_7 = 0;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_19))) {
+    __pyx_t_17 = PyMethod_GET_SELF(__pyx_t_19);
+    if (likely(__pyx_t_17)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_19);
+      __Pyx_INCREF(__pyx_t_17);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_19, function);
+      __pyx_t_7 = 1;
+    }
+  }
+  #if CYTHON_FAST_PYCALL
+  if (PyFunction_Check(__pyx_t_19)) {
+    PyObject *__pyx_temp[4] = {__pyx_t_17, __pyx_t_4, __pyx_t_5, __pyx_int_3};
+    __pyx_t_18 = __Pyx_PyFunction_FastCall(__pyx_t_19, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_17); __pyx_t_17 = 0;
+    __Pyx_GOTREF(__pyx_t_18);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  } else
+  #endif
+  #if CYTHON_FAST_PYCCALL
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_19)) {
+    PyObject *__pyx_temp[4] = {__pyx_t_17, __pyx_t_4, __pyx_t_5, __pyx_int_3};
+    __pyx_t_18 = __Pyx_PyCFunction_FastCall(__pyx_t_19, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_17); __pyx_t_17 = 0;
+    __Pyx_GOTREF(__pyx_t_18);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  } else
+  #endif
+  {
+    __pyx_t_20 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_20);
+    if (__pyx_t_17) {
+      __Pyx_GIVEREF(__pyx_t_17); PyTuple_SET_ITEM(__pyx_t_20, 0, __pyx_t_17); __pyx_t_17 = NULL;
+    }
+    __Pyx_GIVEREF(__pyx_t_4);
+    PyTuple_SET_ITEM(__pyx_t_20, 0+__pyx_t_7, __pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_5);
+    PyTuple_SET_ITEM(__pyx_t_20, 1+__pyx_t_7, __pyx_t_5);
     __Pyx_INCREF(__pyx_int_3);
     __Pyx_GIVEREF(__pyx_int_3);
-    PyTuple_SET_ITEM(__pyx_t_16, 2+__pyx_t_7, __pyx_int_3);
-    __pyx_t_2 = 0;
+    PyTuple_SET_ITEM(__pyx_t_20, 2+__pyx_t_7, __pyx_int_3);
     __pyx_t_4 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_15, __pyx_t_16, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 47, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+    __pyx_t_5 = 0;
+    __pyx_t_18 = __Pyx_PyObject_Call(__pyx_t_19, __pyx_t_20, NULL); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_18);
+    __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
   }
-  __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-  __pyx_t_15 = PyObject_GetItem(__pyx_t_5, __pyx_tuple__10); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 47, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_15);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 47, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
+  __pyx_t_19 = PyObject_GetItem(__pyx_t_18, __pyx_tuple__13); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_19);
+  __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
+  __pyx_t_18 = PyTuple_New(3); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_18);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_18, 0, __pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3);
-  __Pyx_GIVEREF(__pyx_t_15);
-  PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_15);
+  PyTuple_SET_ITEM(__pyx_t_18, 1, __pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_19);
+  PyTuple_SET_ITEM(__pyx_t_18, 2, __pyx_t_19);
+  __pyx_t_2 = 0;
   __pyx_t_3 = 0;
-  __pyx_t_15 = 0;
-  __pyx_r = __pyx_t_5;
-  __pyx_t_5 = 0;
+  __pyx_t_19 = 0;
+  __pyx_r = __pyx_t_18;
+  __pyx_t_18 = 0;
   goto __pyx_L0;
 
-  /* "ir_cam.pyx":29
- *         self.terminate_connection()
+  /* "ir_cam.pyx":41
+ *             raise RuntimeError('Error setting thermal range')
  * 
  *     def get_frame(self):             # <<<<<<<<<<<<<<
  *         cdef int w_t
@@ -2669,9 +3236,10 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_14);
-  __Pyx_XDECREF(__pyx_t_15);
-  __Pyx_XDECREF(__pyx_t_16);
+  __Pyx_XDECREF(__pyx_t_17);
+  __Pyx_XDECREF(__pyx_t_18);
+  __Pyx_XDECREF(__pyx_t_19);
+  __Pyx_XDECREF(__pyx_t_20);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
     __Pyx_PyThreadState_declare
     __Pyx_PyThreadState_assign
@@ -2688,13 +3256,16 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
   __pyx_L2:;
   __Pyx_XDECREF((PyObject *)__pyx_v_data_t);
   __Pyx_XDECREF((PyObject *)__pyx_v_data_p);
+  __Pyx_XDECREF(__pyx_v_new_data_t);
+  __Pyx_XDECREF(__pyx_v_i);
+  __Pyx_XDECREF(__pyx_v_val);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "ir_cam.pyx":49
- *         return data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
+/* "ir_cam.pyx":65
+ *         return new_data_t.reshape(h_t, w_t), data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
  * 
  *     def get_palette_frame(self):             # <<<<<<<<<<<<<<
  *         cdef int w
@@ -2702,20 +3273,20 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_6get_frame(CYTHON_UNUSED PyObject *_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6ir_cam_8IrCamera_9get_palette_frame(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
-static PyMethodDef __pyx_mdef_6ir_cam_8IrCamera_9get_palette_frame = {"get_palette_frame", (PyCFunction)__pyx_pw_6ir_cam_8IrCamera_9get_palette_frame, METH_O, 0};
-static PyObject *__pyx_pw_6ir_cam_8IrCamera_9get_palette_frame(PyObject *__pyx_self, PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_6ir_cam_8IrCamera_13get_palette_frame(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
+static PyMethodDef __pyx_mdef_6ir_cam_8IrCamera_13get_palette_frame = {"get_palette_frame", (PyCFunction)__pyx_pw_6ir_cam_8IrCamera_13get_palette_frame, METH_O, 0};
+static PyObject *__pyx_pw_6ir_cam_8IrCamera_13get_palette_frame(PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_palette_frame (wrapper)", 0);
-  __pyx_r = __pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(__pyx_self, ((PyObject *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6ir_cam_8IrCamera_12get_palette_frame(__pyx_self, ((PyObject *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self) {
+static PyObject *__pyx_pf_6ir_cam_8IrCamera_12get_palette_frame(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self) {
   int __pyx_v_w;
   int __pyx_v_h;
   PyArrayObject *__pyx_v_data = 0;
@@ -2743,7 +3314,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
   __pyx_pybuffernd_data.data = NULL;
   __pyx_pybuffernd_data.rcbuffer = &__pyx_pybuffer_data;
 
-  /* "ir_cam.pyx":53
+  /* "ir_cam.pyx":69
  *         cdef int h
  *         cdef np.ndarray[np.uint8_t, ndim=1] data
  *         retval = evo_irimager_get_palette_image_size(&w, &h)             # <<<<<<<<<<<<<<
@@ -2752,7 +3323,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
  */
   __pyx_v_retval = evo_irimager_get_palette_image_size((&__pyx_v_w), (&__pyx_v_h));
 
-  /* "ir_cam.pyx":54
+  /* "ir_cam.pyx":70
  *         cdef np.ndarray[np.uint8_t, ndim=1] data
  *         retval = evo_irimager_get_palette_image_size(&w, &h)
  *         if retval == -1:             # <<<<<<<<<<<<<<
@@ -2762,20 +3333,20 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
   __pyx_t_1 = ((__pyx_v_retval == -1L) != 0);
   if (__pyx_t_1) {
 
-    /* "ir_cam.pyx":55
+    /* "ir_cam.pyx":71
  *         retval = evo_irimager_get_palette_image_size(&w, &h)
  *         if retval == -1:
  *             raise RuntimeError('Error getting palette image size...')             # <<<<<<<<<<<<<<
  *         data = np.zeros(w*h*3, dtype=np.dtype('u1'), order='C')
  *         retval = evo_irimager_get_palette_image(&w, &h, &data[0])
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__14, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 55, __pyx_L1_error)
+    __PYX_ERR(0, 71, __pyx_L1_error)
 
-    /* "ir_cam.pyx":54
+    /* "ir_cam.pyx":70
  *         cdef np.ndarray[np.uint8_t, ndim=1] data
  *         retval = evo_irimager_get_palette_image_size(&w, &h)
  *         if retval == -1:             # <<<<<<<<<<<<<<
@@ -2784,38 +3355,38 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
  */
   }
 
-  /* "ir_cam.pyx":56
+  /* "ir_cam.pyx":72
  *         if retval == -1:
  *             raise RuntimeError('Error getting palette image size...')
  *         data = np.zeros(w*h*3, dtype=np.dtype('u1'), order='C')             # <<<<<<<<<<<<<<
  *         retval = evo_irimager_get_palette_image(&w, &h, &data[0])
  *         if retval == -1:
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_long(((__pyx_v_w * __pyx_v_h) * 3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_long(((__pyx_v_w * __pyx_v_h) * 3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5numpy_dtype), __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5numpy_dtype), __pyx_tuple__15, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 56, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 56, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 56, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 56, __pyx_L1_error)
+  if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 72, __pyx_L1_error)
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_5);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -2832,13 +3403,13 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
       __pyx_t_8 = __pyx_t_9 = __pyx_t_10 = 0;
     }
     __pyx_pybuffernd_data.diminfo[0].strides = __pyx_pybuffernd_data.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_data.diminfo[0].shape = __pyx_pybuffernd_data.rcbuffer->pybuffer.shape[0];
-    if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 56, __pyx_L1_error)
+    if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 72, __pyx_L1_error)
   }
   __pyx_t_6 = 0;
   __pyx_v_data = ((PyArrayObject *)__pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "ir_cam.pyx":57
+  /* "ir_cam.pyx":73
  *             raise RuntimeError('Error getting palette image size...')
  *         data = np.zeros(w*h*3, dtype=np.dtype('u1'), order='C')
  *         retval = evo_irimager_get_palette_image(&w, &h, &data[0])             # <<<<<<<<<<<<<<
@@ -2853,11 +3424,11 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
   } else if (unlikely(__pyx_t_11 >= __pyx_pybuffernd_data.diminfo[0].shape)) __pyx_t_7 = 0;
   if (unlikely(__pyx_t_7 != -1)) {
     __Pyx_RaiseBufferIndexError(__pyx_t_7);
-    __PYX_ERR(0, 57, __pyx_L1_error)
+    __PYX_ERR(0, 73, __pyx_L1_error)
   }
   __pyx_v_retval = evo_irimager_get_palette_image((&__pyx_v_w), (&__pyx_v_h), (&(*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_uint8_t *, __pyx_pybuffernd_data.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_data.diminfo[0].strides))));
 
-  /* "ir_cam.pyx":58
+  /* "ir_cam.pyx":74
  *         data = np.zeros(w*h*3, dtype=np.dtype('u1'), order='C')
  *         retval = evo_irimager_get_palette_image(&w, &h, &data[0])
  *         if retval == -1:             # <<<<<<<<<<<<<<
@@ -2867,20 +3438,20 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
   __pyx_t_1 = ((__pyx_v_retval == -1L) != 0);
   if (__pyx_t_1) {
 
-    /* "ir_cam.pyx":59
+    /* "ir_cam.pyx":75
  *         retval = evo_irimager_get_palette_image(&w, &h, &data[0])
  *         if retval == -1:
  *             raise RuntimeError('Error getting image')             # <<<<<<<<<<<<<<
  *         return data.reshape(h, w, 3)[:,:,::-1] # bgr -> rgb
  * 
  */
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 59, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__16, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 75, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_Raise(__pyx_t_5, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __PYX_ERR(0, 59, __pyx_L1_error)
+    __PYX_ERR(0, 75, __pyx_L1_error)
 
-    /* "ir_cam.pyx":58
+    /* "ir_cam.pyx":74
  *         data = np.zeros(w*h*3, dtype=np.dtype('u1'), order='C')
  *         retval = evo_irimager_get_palette_image(&w, &h, &data[0])
  *         if retval == -1:             # <<<<<<<<<<<<<<
@@ -2889,7 +3460,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
  */
   }
 
-  /* "ir_cam.pyx":60
+  /* "ir_cam.pyx":76
  *         if retval == -1:
  *             raise RuntimeError('Error getting image')
  *         return data.reshape(h, w, 3)[:,:,::-1] # bgr -> rgb             # <<<<<<<<<<<<<<
@@ -2897,11 +3468,11 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
  *     def terminate_connection(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_data), __pyx_n_s_reshape); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_data), __pyx_n_s_reshape); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_h); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_h); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_w); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_w); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_12 = NULL;
   __pyx_t_7 = 0;
@@ -2918,7 +3489,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[4] = {__pyx_t_12, __pyx_t_4, __pyx_t_3, __pyx_int_3};
-    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 60, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -2928,7 +3499,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[4] = {__pyx_t_12, __pyx_t_4, __pyx_t_3, __pyx_int_3};
-    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 60, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -2936,7 +3507,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
   } else
   #endif
   {
-    __pyx_t_13 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 60, __pyx_L1_error)
+    __pyx_t_13 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
     if (__pyx_t_12) {
       __Pyx_GIVEREF(__pyx_t_12); PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_12); __pyx_t_12 = NULL;
@@ -2950,20 +3521,20 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
     PyTuple_SET_ITEM(__pyx_t_13, 2+__pyx_t_7, __pyx_int_3);
     __pyx_t_4 = 0;
     __pyx_t_3 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_13, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 60, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_13, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 76, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyObject_GetItem(__pyx_t_5, __pyx_tuple__17); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_2 = PyObject_GetItem(__pyx_t_5, __pyx_tuple__20); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "ir_cam.pyx":49
- *         return data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
+  /* "ir_cam.pyx":65
+ *         return new_data_t.reshape(h_t, w_t), data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
  * 
  *     def get_palette_frame(self):             # <<<<<<<<<<<<<<
  *         cdef int w
@@ -2996,7 +3567,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
   return __pyx_r;
 }
 
-/* "ir_cam.pyx":62
+/* "ir_cam.pyx":78
  *         return data.reshape(h, w, 3)[:,:,::-1] # bgr -> rgb
  * 
  *     def terminate_connection(self):             # <<<<<<<<<<<<<<
@@ -3005,20 +3576,20 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_8get_palette_frame(CYTHON_UNUSED PyO
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6ir_cam_8IrCamera_11terminate_connection(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
-static PyMethodDef __pyx_mdef_6ir_cam_8IrCamera_11terminate_connection = {"terminate_connection", (PyCFunction)__pyx_pw_6ir_cam_8IrCamera_11terminate_connection, METH_O, 0};
-static PyObject *__pyx_pw_6ir_cam_8IrCamera_11terminate_connection(PyObject *__pyx_self, PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_6ir_cam_8IrCamera_15terminate_connection(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
+static PyMethodDef __pyx_mdef_6ir_cam_8IrCamera_15terminate_connection = {"terminate_connection", (PyCFunction)__pyx_pw_6ir_cam_8IrCamera_15terminate_connection, METH_O, 0};
+static PyObject *__pyx_pw_6ir_cam_8IrCamera_15terminate_connection(PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("terminate_connection (wrapper)", 0);
-  __pyx_r = __pyx_pf_6ir_cam_8IrCamera_10terminate_connection(__pyx_self, ((PyObject *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6ir_cam_8IrCamera_14terminate_connection(__pyx_self, ((PyObject *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6ir_cam_8IrCamera_10terminate_connection(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self) {
+static PyObject *__pyx_pf_6ir_cam_8IrCamera_14terminate_connection(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self) {
   int __pyx_v_retval;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -3026,7 +3597,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_10terminate_connection(CYTHON_UNUSED
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("terminate_connection", 0);
 
-  /* "ir_cam.pyx":63
+  /* "ir_cam.pyx":79
  * 
  *     def terminate_connection(self):
  *         retval = evo_irimager_terminate()             # <<<<<<<<<<<<<<
@@ -3035,7 +3606,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_10terminate_connection(CYTHON_UNUSED
  */
   __pyx_v_retval = evo_irimager_terminate();
 
-  /* "ir_cam.pyx":64
+  /* "ir_cam.pyx":80
  *     def terminate_connection(self):
  *         retval = evo_irimager_terminate()
  *         if retval == -1:             # <<<<<<<<<<<<<<
@@ -3044,18 +3615,18 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_10terminate_connection(CYTHON_UNUSED
   __pyx_t_1 = ((__pyx_v_retval == -1L) != 0);
   if (__pyx_t_1) {
 
-    /* "ir_cam.pyx":65
+    /* "ir_cam.pyx":81
  *         retval = evo_irimager_terminate()
  *         if retval == -1:
  *             raise RuntimeError('Error terminating camera connection')             # <<<<<<<<<<<<<<
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__18, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__21, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 65, __pyx_L1_error)
+    __PYX_ERR(0, 81, __pyx_L1_error)
 
-    /* "ir_cam.pyx":64
+    /* "ir_cam.pyx":80
  *     def terminate_connection(self):
  *         retval = evo_irimager_terminate()
  *         if retval == -1:             # <<<<<<<<<<<<<<
@@ -3063,7 +3634,7 @@ static PyObject *__pyx_pf_6ir_cam_8IrCamera_10terminate_connection(CYTHON_UNUSED
  */
   }
 
-  /* "ir_cam.pyx":62
+  /* "ir_cam.pyx":78
  *         return data.reshape(h, w, 3)[:,:,::-1] # bgr -> rgb
  * 
  *     def terminate_connection(self):             # <<<<<<<<<<<<<<
@@ -3253,7 +3824,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__19, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 235, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__22, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 235, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3309,7 +3880,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  * 
  *             info.buf = PyArray_DATA(self)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__20, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 239, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__23, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -3618,7 +4189,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__21, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 276, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__24, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 276, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4507,7 +5078,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__22, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 823, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__25, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 823, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4575,7 +5146,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  *             # One could encode it in the format string and have Cython
  *             # complain instead, BUT: < and > in format strings also imply
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__23, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 827, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__26, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 827, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4684,7 +5255,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  */
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__24, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 847, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__27, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 847, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_Raise(__pyx_t_4, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -5364,7 +5935,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__25, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1013, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__28, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1013, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -5493,7 +6064,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__26, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1019, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__29, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1019, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -5619,7 +6190,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__27, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1025, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__30, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1025, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -5708,6 +6279,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Error_getting_palette_image_size, __pyx_k_Error_getting_palette_image_size, sizeof(__pyx_k_Error_getting_palette_image_size), 0, 0, 1, 0},
   {&__pyx_kp_s_Error_getting_thermal_image_size, __pyx_k_Error_getting_thermal_image_size, sizeof(__pyx_k_Error_getting_thermal_image_size), 0, 0, 1, 0},
   {&__pyx_kp_s_Error_initializing_connection, __pyx_k_Error_initializing_connection, sizeof(__pyx_k_Error_initializing_connection), 0, 0, 1, 0},
+  {&__pyx_kp_s_Error_setting_radiation_paramete, __pyx_k_Error_setting_radiation_paramete, sizeof(__pyx_k_Error_setting_radiation_paramete), 0, 0, 1, 0},
+  {&__pyx_kp_s_Error_setting_thermal_range, __pyx_k_Error_setting_thermal_range, sizeof(__pyx_k_Error_setting_thermal_range), 0, 0, 1, 0},
   {&__pyx_kp_s_Error_terminating_camera_connect, __pyx_k_Error_terminating_camera_connect, sizeof(__pyx_k_Error_terminating_camera_connect), 0, 0, 1, 0},
   {&__pyx_kp_u_Format_string_allocated_too_shor, __pyx_k_Format_string_allocated_too_shor, sizeof(__pyx_k_Format_string_allocated_too_shor), 0, 1, 0, 0},
   {&__pyx_kp_u_Format_string_allocated_too_shor_2, __pyx_k_Format_string_allocated_too_shor_2, sizeof(__pyx_k_Format_string_allocated_too_shor_2), 0, 1, 0, 0},
@@ -5718,17 +6291,22 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_IrCamera___init, __pyx_k_IrCamera___init, sizeof(__pyx_k_IrCamera___init), 0, 0, 1, 1},
   {&__pyx_n_s_IrCamera_get_frame, __pyx_k_IrCamera_get_frame, sizeof(__pyx_k_IrCamera_get_frame), 0, 0, 1, 1},
   {&__pyx_n_s_IrCamera_get_palette_frame, __pyx_k_IrCamera_get_palette_frame, sizeof(__pyx_k_IrCamera_get_palette_frame), 0, 0, 1, 1},
+  {&__pyx_n_s_IrCamera_set_radiation_parameter, __pyx_k_IrCamera_set_radiation_parameter, sizeof(__pyx_k_IrCamera_set_radiation_parameter), 0, 0, 1, 1},
+  {&__pyx_n_s_IrCamera_set_thermal_range, __pyx_k_IrCamera_set_thermal_range, sizeof(__pyx_k_IrCamera_set_thermal_range), 0, 0, 1, 1},
   {&__pyx_n_s_IrCamera_terminate_connection, __pyx_k_IrCamera_terminate_connection, sizeof(__pyx_k_IrCamera_terminate_connection), 0, 0, 1, 1},
   {&__pyx_kp_u_Non_native_byte_order_not_suppor, __pyx_k_Non_native_byte_order_not_suppor, sizeof(__pyx_k_Non_native_byte_order_not_suppor), 0, 1, 0, 0},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
+  {&__pyx_kp_s_cython_ir_cam_pyx, __pyx_k_cython_ir_cam_pyx, sizeof(__pyx_k_cython_ir_cam_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_data, __pyx_k_data, sizeof(__pyx_k_data), 0, 0, 1, 1},
   {&__pyx_n_s_data_p, __pyx_k_data_p, sizeof(__pyx_k_data_p), 0, 0, 1, 1},
   {&__pyx_n_s_data_t, __pyx_k_data_t, sizeof(__pyx_k_data_t), 0, 0, 1, 1},
   {&__pyx_n_s_doc, __pyx_k_doc, sizeof(__pyx_k_doc), 0, 0, 1, 1},
   {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
+  {&__pyx_n_s_emissivity, __pyx_k_emissivity, sizeof(__pyx_k_emissivity), 0, 0, 1, 1},
   {&__pyx_n_s_enter, __pyx_k_enter, sizeof(__pyx_k_enter), 0, 0, 1, 1},
+  {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
   {&__pyx_n_s_err_type, __pyx_k_err_type, sizeof(__pyx_k_err_type), 0, 0, 1, 1},
   {&__pyx_n_s_exit, __pyx_k_exit, sizeof(__pyx_k_exit), 0, 0, 1, 1},
   {&__pyx_n_s_get_frame, __pyx_k_get_frame, sizeof(__pyx_k_get_frame), 0, 0, 1, 1},
@@ -5736,15 +6314,16 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_h, __pyx_k_h, sizeof(__pyx_k_h), 0, 0, 1, 1},
   {&__pyx_n_s_h_p, __pyx_k_h_p, sizeof(__pyx_k_h_p), 0, 0, 1, 1},
   {&__pyx_n_s_h_t, __pyx_k_h_t, sizeof(__pyx_k_h_t), 0, 0, 1, 1},
+  {&__pyx_n_s_i, __pyx_k_i, sizeof(__pyx_k_i), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_init, __pyx_k_init, sizeof(__pyx_k_init), 0, 0, 1, 1},
   {&__pyx_n_s_ir_cam, __pyx_k_ir_cam, sizeof(__pyx_k_ir_cam), 0, 0, 1, 1},
-  {&__pyx_kp_s_ir_cam_pyx, __pyx_k_ir_cam_pyx, sizeof(__pyx_k_ir_cam_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_metaclass, __pyx_k_metaclass, sizeof(__pyx_k_metaclass), 0, 0, 1, 1},
   {&__pyx_n_s_module, __pyx_k_module, sizeof(__pyx_k_module), 0, 0, 1, 1},
   {&__pyx_kp_u_ndarray_is_not_C_contiguous, __pyx_k_ndarray_is_not_C_contiguous, sizeof(__pyx_k_ndarray_is_not_C_contiguous), 0, 1, 0, 0},
   {&__pyx_kp_u_ndarray_is_not_Fortran_contiguou, __pyx_k_ndarray_is_not_Fortran_contiguou, sizeof(__pyx_k_ndarray_is_not_Fortran_contiguou), 0, 1, 0, 0},
+  {&__pyx_n_s_new_data_t, __pyx_k_new_data_t, sizeof(__pyx_k_new_data_t), 0, 0, 1, 1},
   {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
   {&__pyx_n_s_null_ptr, __pyx_k_null_ptr, sizeof(__pyx_k_null_ptr), 0, 0, 1, 1},
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
@@ -5758,12 +6337,19 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_reshape, __pyx_k_reshape, sizeof(__pyx_k_reshape), 0, 0, 1, 1},
   {&__pyx_n_s_retval, __pyx_k_retval, sizeof(__pyx_k_retval), 0, 0, 1, 1},
   {&__pyx_n_s_self, __pyx_k_self, sizeof(__pyx_k_self), 0, 0, 1, 1},
+  {&__pyx_n_s_set_radiation_parameters, __pyx_k_set_radiation_parameters, sizeof(__pyx_k_set_radiation_parameters), 0, 0, 1, 1},
+  {&__pyx_n_s_set_thermal_range, __pyx_k_set_thermal_range, sizeof(__pyx_k_set_thermal_range), 0, 0, 1, 1},
+  {&__pyx_n_s_tAmbient, __pyx_k_tAmbient, sizeof(__pyx_k_tAmbient), 0, 0, 1, 1},
+  {&__pyx_n_s_t_max, __pyx_k_t_max, sizeof(__pyx_k_t_max), 0, 0, 1, 1},
+  {&__pyx_n_s_t_min, __pyx_k_t_min, sizeof(__pyx_k_t_min), 0, 0, 1, 1},
   {&__pyx_n_s_terminate_connection, __pyx_k_terminate_connection, sizeof(__pyx_k_terminate_connection), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_traceback, __pyx_k_traceback, sizeof(__pyx_k_traceback), 0, 0, 1, 1},
+  {&__pyx_n_s_transmissivity, __pyx_k_transmissivity, sizeof(__pyx_k_transmissivity), 0, 0, 1, 1},
   {&__pyx_n_s_u1, __pyx_k_u1, sizeof(__pyx_k_u1), 0, 0, 1, 1},
   {&__pyx_n_s_u2, __pyx_k_u2, sizeof(__pyx_k_u2), 0, 0, 1, 1},
   {&__pyx_kp_u_unknown_dtype_code_in_numpy_pxd, __pyx_k_unknown_dtype_code_in_numpy_pxd, sizeof(__pyx_k_unknown_dtype_code_in_numpy_pxd), 0, 1, 0, 0},
+  {&__pyx_n_s_val, __pyx_k_val, sizeof(__pyx_k_val), 0, 0, 1, 1},
   {&__pyx_n_s_value, __pyx_k_value, sizeof(__pyx_k_value), 0, 0, 1, 1},
   {&__pyx_n_s_w, __pyx_k_w, sizeof(__pyx_k_w), 0, 0, 1, 1},
   {&__pyx_n_s_w_p, __pyx_k_w_p, sizeof(__pyx_k_w_p), 0, 0, 1, 1},
@@ -5774,8 +6360,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 14, __pyx_L1_error)
-  __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 61, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 235, __pyx_L1_error)
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(1, 248, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 1013, __pyx_L1_error)
@@ -5788,153 +6375,186 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "ir_cam.pyx":23
+  /* "ir_cam.pyx":25
  *         retval = evo_irimager_usb_init(self.xml_config, null_ptr, null_ptr)
  *         if retval == -1:
  *             raise RuntimeError('Error initializing connection...')             # <<<<<<<<<<<<<<
  *         return self
  * 
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_Error_initializing_connection); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_Error_initializing_connection); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "ir_cam.pyx":38
+  /* "ir_cam.pyx":34
+ *         retval = evo_irimager_set_radiation_parameters(emissivity, transmissivity, tAmbient)
+ *         if retval == -1:
+ *             raise RuntimeError('Error setting radiation parameters')             # <<<<<<<<<<<<<<
+ * 
+ *     def set_thermal_range(self, t_min, t_max):
+ */
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_Error_setting_radiation_paramete); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 34, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__2);
+  __Pyx_GIVEREF(__pyx_tuple__2);
+
+  /* "ir_cam.pyx":39
+ *         retval = evo_irimager_set_temperature_range(t_min, t_max)
+ *         if retval == -1:
+ *             raise RuntimeError('Error setting thermal range')             # <<<<<<<<<<<<<<
+ * 
+ *     def get_frame(self):
+ */
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_Error_setting_thermal_range); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__3);
+  __Pyx_GIVEREF(__pyx_tuple__3);
+
+  /* "ir_cam.pyx":50
  *         retval = evo_irimager_get_thermal_image_size(&w_t, &h_t)
  *         if retval == -1:
  *             raise RuntimeError('Error getting thermal image size...')             # <<<<<<<<<<<<<<
  *         retval = evo_irimager_get_palette_image_size(&w_p, &h_p)
  *         if retval == -1:
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_Error_getting_thermal_image_size); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 38, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__2);
-  __Pyx_GIVEREF(__pyx_tuple__2);
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_Error_getting_thermal_image_size); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__4);
+  __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "ir_cam.pyx":41
+  /* "ir_cam.pyx":53
  *         retval = evo_irimager_get_palette_image_size(&w_p, &h_p)
  *         if retval == -1:
  *             raise RuntimeError('Error getting palette image size...')             # <<<<<<<<<<<<<<
  *         data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')
  *         data_p = np.zeros(w_p*h_p*3, dtype=np.dtype('u1'), order='C')
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_Error_getting_palette_image_size); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 41, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__3);
-  __Pyx_GIVEREF(__pyx_tuple__3);
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_Error_getting_palette_image_size); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__5);
+  __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "ir_cam.pyx":42
+  /* "ir_cam.pyx":54
  *         if retval == -1:
  *             raise RuntimeError('Error getting palette image size...')
  *         data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')             # <<<<<<<<<<<<<<
  *         data_p = np.zeros(w_p*h_p*3, dtype=np.dtype('u1'), order='C')
  *         retval = evo_irimager_get_thermal_palette_image(w_t, h_t, &data_t[0], w_p, h_p, &data_p[0])
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_n_s_u2); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 42, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__4);
-  __Pyx_GIVEREF(__pyx_tuple__4);
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_n_s_u2); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__6);
+  __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "ir_cam.pyx":43
+  /* "ir_cam.pyx":55
  *             raise RuntimeError('Error getting palette image size...')
  *         data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')
  *         data_p = np.zeros(w_p*h_p*3, dtype=np.dtype('u1'), order='C')             # <<<<<<<<<<<<<<
  *         retval = evo_irimager_get_thermal_palette_image(w_t, h_t, &data_t[0], w_p, h_p, &data_p[0])
  *         if retval == -1:
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_n_s_u1); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 43, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__5);
-  __Pyx_GIVEREF(__pyx_tuple__5);
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_n_s_u1); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 55, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__7);
+  __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "ir_cam.pyx":46
+  /* "ir_cam.pyx":58
  *         retval = evo_irimager_get_thermal_palette_image(w_t, h_t, &data_t[0], w_p, h_p, &data_p[0])
  *         if retval == -1:
  *             raise RuntimeError('Error getting image')             # <<<<<<<<<<<<<<
- *         return data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
- * 
+ *         new_data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')
+ *         #      float t = ((((float)data[i])-1000.f))/10.f;
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_Error_getting_image); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 46, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__6);
-  __Pyx_GIVEREF(__pyx_tuple__6);
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_s_Error_getting_image); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__8);
+  __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "ir_cam.pyx":47
+  /* "ir_cam.pyx":59
  *         if retval == -1:
  *             raise RuntimeError('Error getting image')
- *         return data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]             # <<<<<<<<<<<<<<
+ *         new_data_t = np.zeros(w_t*h_t, dtype=np.dtype('u2'), order='C')             # <<<<<<<<<<<<<<
+ *         #      float t = ((((float)data[i])-1000.f))/10.f;
+ *         for i, val in enumerate(data_t):
+ */
+  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_n_s_u2); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__9);
+  __Pyx_GIVEREF(__pyx_tuple__9);
+
+  /* "ir_cam.pyx":63
+ *         for i, val in enumerate(data_t):
+ *             new_data_t[i] = (float(val) - 1000.0) / 10.0
+ *         return new_data_t.reshape(h_t, w_t), data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]             # <<<<<<<<<<<<<<
  * 
  *     def get_palette_frame(self):
  */
-  __pyx_slice__7 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__7)) __PYX_ERR(0, 47, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_slice__7);
-  __Pyx_GIVEREF(__pyx_slice__7);
-  __pyx_slice__8 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__8)) __PYX_ERR(0, 47, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_slice__8);
-  __Pyx_GIVEREF(__pyx_slice__8);
-  __pyx_slice__9 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__9)) __PYX_ERR(0, 47, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_slice__9);
-  __Pyx_GIVEREF(__pyx_slice__9);
-  __pyx_tuple__10 = PyTuple_Pack(3, __pyx_slice__7, __pyx_slice__8, __pyx_slice__9); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 47, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__10);
-  __Pyx_GIVEREF(__pyx_tuple__10);
+  __pyx_slice__10 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__10)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_slice__10);
+  __Pyx_GIVEREF(__pyx_slice__10);
+  __pyx_slice__11 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__11)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_slice__11);
+  __Pyx_GIVEREF(__pyx_slice__11);
+  __pyx_slice__12 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__12)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_slice__12);
+  __Pyx_GIVEREF(__pyx_slice__12);
+  __pyx_tuple__13 = PyTuple_Pack(3, __pyx_slice__10, __pyx_slice__11, __pyx_slice__12); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__13);
+  __Pyx_GIVEREF(__pyx_tuple__13);
 
-  /* "ir_cam.pyx":55
+  /* "ir_cam.pyx":71
  *         retval = evo_irimager_get_palette_image_size(&w, &h)
  *         if retval == -1:
  *             raise RuntimeError('Error getting palette image size...')             # <<<<<<<<<<<<<<
  *         data = np.zeros(w*h*3, dtype=np.dtype('u1'), order='C')
  *         retval = evo_irimager_get_palette_image(&w, &h, &data[0])
  */
-  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_kp_s_Error_getting_palette_image_size); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 55, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__11);
-  __Pyx_GIVEREF(__pyx_tuple__11);
+  __pyx_tuple__14 = PyTuple_Pack(1, __pyx_kp_s_Error_getting_palette_image_size); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__14);
+  __Pyx_GIVEREF(__pyx_tuple__14);
 
-  /* "ir_cam.pyx":56
+  /* "ir_cam.pyx":72
  *         if retval == -1:
  *             raise RuntimeError('Error getting palette image size...')
  *         data = np.zeros(w*h*3, dtype=np.dtype('u1'), order='C')             # <<<<<<<<<<<<<<
  *         retval = evo_irimager_get_palette_image(&w, &h, &data[0])
  *         if retval == -1:
  */
-  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_n_s_u1); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 56, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__12);
-  __Pyx_GIVEREF(__pyx_tuple__12);
+  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_n_s_u1); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__15);
+  __Pyx_GIVEREF(__pyx_tuple__15);
 
-  /* "ir_cam.pyx":59
+  /* "ir_cam.pyx":75
  *         retval = evo_irimager_get_palette_image(&w, &h, &data[0])
  *         if retval == -1:
  *             raise RuntimeError('Error getting image')             # <<<<<<<<<<<<<<
  *         return data.reshape(h, w, 3)[:,:,::-1] # bgr -> rgb
  * 
  */
-  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_s_Error_getting_image); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__13);
-  __Pyx_GIVEREF(__pyx_tuple__13);
+  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_kp_s_Error_getting_image); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__16);
+  __Pyx_GIVEREF(__pyx_tuple__16);
 
-  /* "ir_cam.pyx":60
+  /* "ir_cam.pyx":76
  *         if retval == -1:
  *             raise RuntimeError('Error getting image')
  *         return data.reshape(h, w, 3)[:,:,::-1] # bgr -> rgb             # <<<<<<<<<<<<<<
  * 
  *     def terminate_connection(self):
  */
-  __pyx_slice__14 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__14)) __PYX_ERR(0, 60, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_slice__14);
-  __Pyx_GIVEREF(__pyx_slice__14);
-  __pyx_slice__15 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__15)) __PYX_ERR(0, 60, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_slice__15);
-  __Pyx_GIVEREF(__pyx_slice__15);
-  __pyx_slice__16 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__16)) __PYX_ERR(0, 60, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_slice__16);
-  __Pyx_GIVEREF(__pyx_slice__16);
-  __pyx_tuple__17 = PyTuple_Pack(3, __pyx_slice__14, __pyx_slice__15, __pyx_slice__16); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(0, 60, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__17);
-  __Pyx_GIVEREF(__pyx_tuple__17);
+  __pyx_slice__17 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__17)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_slice__17);
+  __Pyx_GIVEREF(__pyx_slice__17);
+  __pyx_slice__18 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__18)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_slice__18);
+  __Pyx_GIVEREF(__pyx_slice__18);
+  __pyx_slice__19 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__19)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_slice__19);
+  __Pyx_GIVEREF(__pyx_slice__19);
+  __pyx_tuple__20 = PyTuple_Pack(3, __pyx_slice__17, __pyx_slice__18, __pyx_slice__19); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__20);
+  __Pyx_GIVEREF(__pyx_tuple__20);
 
-  /* "ir_cam.pyx":65
+  /* "ir_cam.pyx":81
  *         retval = evo_irimager_terminate()
  *         if retval == -1:
  *             raise RuntimeError('Error terminating camera connection')             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__18 = PyTuple_Pack(1, __pyx_kp_s_Error_terminating_camera_connect); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 65, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__18);
-  __Pyx_GIVEREF(__pyx_tuple__18);
+  __pyx_tuple__21 = PyTuple_Pack(1, __pyx_kp_s_Error_terminating_camera_connect); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__21);
+  __Pyx_GIVEREF(__pyx_tuple__21);
 
   /* "../miniconda2/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":235
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
@@ -5943,9 +6563,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  */
-  __pyx_tuple__19 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_C_contiguous); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(1, 235, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__19);
-  __Pyx_GIVEREF(__pyx_tuple__19);
+  __pyx_tuple__22 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_C_contiguous); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(1, 235, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__22);
+  __Pyx_GIVEREF(__pyx_tuple__22);
 
   /* "../miniconda2/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":239
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
@@ -5954,9 +6574,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             info.buf = PyArray_DATA(self)
  */
-  __pyx_tuple__20 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_Fortran_contiguou); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(1, 239, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__20);
-  __Pyx_GIVEREF(__pyx_tuple__20);
+  __pyx_tuple__23 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_Fortran_contiguou); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(1, 239, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__23);
+  __Pyx_GIVEREF(__pyx_tuple__23);
 
   /* "../miniconda2/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":276
  *                 if ((descr.byteorder == c'>' and little_endian) or
@@ -5965,9 +6585,9 @@ static int __Pyx_InitCachedConstants(void) {
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  */
-  __pyx_tuple__21 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(1, 276, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__21);
-  __Pyx_GIVEREF(__pyx_tuple__21);
+  __pyx_tuple__24 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(1, 276, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__24);
+  __Pyx_GIVEREF(__pyx_tuple__24);
 
   /* "../miniconda2/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":823
  * 
@@ -5976,9 +6596,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  */
-  __pyx_tuple__22 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(1, 823, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__22);
-  __Pyx_GIVEREF(__pyx_tuple__22);
+  __pyx_tuple__25 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(1, 823, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__25);
+  __Pyx_GIVEREF(__pyx_tuple__25);
 
   /* "../miniconda2/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":827
  *         if ((child.byteorder == c'>' and little_endian) or
@@ -5987,9 +6607,9 @@ static int __Pyx_InitCachedConstants(void) {
  *             # One could encode it in the format string and have Cython
  *             # complain instead, BUT: < and > in format strings also imply
  */
-  __pyx_tuple__23 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(1, 827, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__23);
-  __Pyx_GIVEREF(__pyx_tuple__23);
+  __pyx_tuple__26 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(1, 827, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__26);
+  __Pyx_GIVEREF(__pyx_tuple__26);
 
   /* "../miniconda2/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":847
  *             t = child.type_num
@@ -5998,9 +6618,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  */
-  __pyx_tuple__24 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor_2); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(1, 847, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__24);
-  __Pyx_GIVEREF(__pyx_tuple__24);
+  __pyx_tuple__27 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor_2); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(1, 847, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__27);
+  __Pyx_GIVEREF(__pyx_tuple__27);
 
   /* "../miniconda2/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1013
  *         _import_array()
@@ -6009,9 +6629,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-  __pyx_tuple__25 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(1, 1013, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__25);
-  __Pyx_GIVEREF(__pyx_tuple__25);
+  __pyx_tuple__28 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(1, 1013, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__28);
+  __Pyx_GIVEREF(__pyx_tuple__28);
 
   /* "../miniconda2/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1019
  *         _import_umath()
@@ -6020,101 +6640,125 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-  __pyx_tuple__26 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(1, 1019, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__26);
-  __Pyx_GIVEREF(__pyx_tuple__26);
+  __pyx_tuple__29 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(1, 1019, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__29);
+  __Pyx_GIVEREF(__pyx_tuple__29);
 
   /* "../miniconda2/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1025
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__27 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(1, 1025, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__27);
-  __Pyx_GIVEREF(__pyx_tuple__27);
+  __pyx_tuple__30 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(1, 1025, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__30);
+  __Pyx_GIVEREF(__pyx_tuple__30);
 
-  /* "ir_cam.pyx":14
+  /* "ir_cam.pyx":16
  * 
  * 
  * class IrCamera(object):             # <<<<<<<<<<<<<<
  * 
  *     def __init__(self, xml_config_file):
  */
-  __pyx_tuple__28 = PyTuple_Pack(1, __pyx_builtin_object); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 14, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__28);
-  __Pyx_GIVEREF(__pyx_tuple__28);
+  __pyx_tuple__31 = PyTuple_Pack(1, __pyx_builtin_object); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__31);
+  __Pyx_GIVEREF(__pyx_tuple__31);
 
-  /* "ir_cam.pyx":16
+  /* "ir_cam.pyx":18
  * class IrCamera(object):
  * 
  *     def __init__(self, xml_config_file):             # <<<<<<<<<<<<<<
  *         self.xml_config = xml_config_file
  * 
  */
-  __pyx_tuple__29 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_xml_config_file); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 16, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__29);
-  __Pyx_GIVEREF(__pyx_tuple__29);
-  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_ir_cam_pyx, __pyx_n_s_init, 16, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_tuple__32 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_xml_config_file); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__32);
+  __Pyx_GIVEREF(__pyx_tuple__32);
+  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_ir_cam_pyx, __pyx_n_s_init, 18, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(0, 18, __pyx_L1_error)
 
-  /* "ir_cam.pyx":19
+  /* "ir_cam.pyx":21
  *         self.xml_config = xml_config_file
  * 
  *     def __enter__(self):             # <<<<<<<<<<<<<<
  *         cdef char* null_ptr = <char *> 0 # is there a better way to do this?
  *         retval = evo_irimager_usb_init(self.xml_config, null_ptr, null_ptr)
  */
-  __pyx_tuple__31 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_null_ptr, __pyx_n_s_retval); if (unlikely(!__pyx_tuple__31)) __PYX_ERR(0, 19, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__31);
-  __Pyx_GIVEREF(__pyx_tuple__31);
-  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_ir_cam_pyx, __pyx_n_s_enter, 19, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_tuple__34 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_null_ptr, __pyx_n_s_retval); if (unlikely(!__pyx_tuple__34)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__34);
+  __Pyx_GIVEREF(__pyx_tuple__34);
+  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__34, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_ir_cam_pyx, __pyx_n_s_enter, 21, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(0, 21, __pyx_L1_error)
 
-  /* "ir_cam.pyx":26
+  /* "ir_cam.pyx":28
  *         return self
  * 
  *     def __exit__(self, err_type, value, traceback):             # <<<<<<<<<<<<<<
  *         self.terminate_connection()
  * 
  */
-  __pyx_tuple__33 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_err_type, __pyx_n_s_value, __pyx_n_s_traceback); if (unlikely(!__pyx_tuple__33)) __PYX_ERR(0, 26, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__33);
-  __Pyx_GIVEREF(__pyx_tuple__33);
-  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_ir_cam_pyx, __pyx_n_s_exit, 26, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_tuple__36 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_err_type, __pyx_n_s_value, __pyx_n_s_traceback); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__36);
+  __Pyx_GIVEREF(__pyx_tuple__36);
+  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_ir_cam_pyx, __pyx_n_s_exit, 28, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(0, 28, __pyx_L1_error)
 
-  /* "ir_cam.pyx":29
+  /* "ir_cam.pyx":31
  *         self.terminate_connection()
+ * 
+ *     def set_radiation_parameters(self, emissivity, transmissivity, tAmbient):             # <<<<<<<<<<<<<<
+ *         retval = evo_irimager_set_radiation_parameters(emissivity, transmissivity, tAmbient)
+ *         if retval == -1:
+ */
+  __pyx_tuple__38 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_emissivity, __pyx_n_s_transmissivity, __pyx_n_s_tAmbient, __pyx_n_s_retval); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__38);
+  __Pyx_GIVEREF(__pyx_tuple__38);
+  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(4, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__38, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_ir_cam_pyx, __pyx_n_s_set_radiation_parameters, 31, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(0, 31, __pyx_L1_error)
+
+  /* "ir_cam.pyx":36
+ *             raise RuntimeError('Error setting radiation parameters')
+ * 
+ *     def set_thermal_range(self, t_min, t_max):             # <<<<<<<<<<<<<<
+ *         retval = evo_irimager_set_temperature_range(t_min, t_max)
+ *         if retval == -1:
+ */
+  __pyx_tuple__40 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_t_min, __pyx_n_s_t_max, __pyx_n_s_retval); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__40);
+  __Pyx_GIVEREF(__pyx_tuple__40);
+  __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(3, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__40, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_ir_cam_pyx, __pyx_n_s_set_thermal_range, 36, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) __PYX_ERR(0, 36, __pyx_L1_error)
+
+  /* "ir_cam.pyx":41
+ *             raise RuntimeError('Error setting thermal range')
  * 
  *     def get_frame(self):             # <<<<<<<<<<<<<<
  *         cdef int w_t
  *         cdef int h_t
  */
-  __pyx_tuple__35 = PyTuple_Pack(8, __pyx_n_s_self, __pyx_n_s_w_t, __pyx_n_s_h_t, __pyx_n_s_w_p, __pyx_n_s_h_p, __pyx_n_s_data_t, __pyx_n_s_data_p, __pyx_n_s_retval); if (unlikely(!__pyx_tuple__35)) __PYX_ERR(0, 29, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__35);
-  __Pyx_GIVEREF(__pyx_tuple__35);
-  __pyx_codeobj__36 = (PyObject*)__Pyx_PyCode_New(1, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__35, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_ir_cam_pyx, __pyx_n_s_get_frame, 29, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_tuple__42 = PyTuple_Pack(11, __pyx_n_s_self, __pyx_n_s_w_t, __pyx_n_s_h_t, __pyx_n_s_w_p, __pyx_n_s_h_p, __pyx_n_s_data_t, __pyx_n_s_data_p, __pyx_n_s_retval, __pyx_n_s_new_data_t, __pyx_n_s_i, __pyx_n_s_val); if (unlikely(!__pyx_tuple__42)) __PYX_ERR(0, 41, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__42);
+  __Pyx_GIVEREF(__pyx_tuple__42);
+  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(1, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_ir_cam_pyx, __pyx_n_s_get_frame, 41, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(0, 41, __pyx_L1_error)
 
-  /* "ir_cam.pyx":49
- *         return data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
+  /* "ir_cam.pyx":65
+ *         return new_data_t.reshape(h_t, w_t), data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
  * 
  *     def get_palette_frame(self):             # <<<<<<<<<<<<<<
  *         cdef int w
  *         cdef int h
  */
-  __pyx_tuple__37 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_w, __pyx_n_s_h, __pyx_n_s_data, __pyx_n_s_retval); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(0, 49, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__37);
-  __Pyx_GIVEREF(__pyx_tuple__37);
-  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_ir_cam_pyx, __pyx_n_s_get_palette_frame, 49, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __pyx_tuple__44 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_w, __pyx_n_s_h, __pyx_n_s_data, __pyx_n_s_retval); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__44);
+  __Pyx_GIVEREF(__pyx_tuple__44);
+  __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(1, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_ir_cam_pyx, __pyx_n_s_get_palette_frame, 65, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(0, 65, __pyx_L1_error)
 
-  /* "ir_cam.pyx":62
+  /* "ir_cam.pyx":78
  *         return data.reshape(h, w, 3)[:,:,::-1] # bgr -> rgb
  * 
  *     def terminate_connection(self):             # <<<<<<<<<<<<<<
  *         retval = evo_irimager_terminate()
  *         if retval == -1:
  */
-  __pyx_tuple__39 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_retval); if (unlikely(!__pyx_tuple__39)) __PYX_ERR(0, 62, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__39);
-  __Pyx_GIVEREF(__pyx_tuple__39);
-  __pyx_codeobj__40 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__39, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_ir_cam_pyx, __pyx_n_s_terminate_connection, 62, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__40)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_tuple__46 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_retval); if (unlikely(!__pyx_tuple__46)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__46);
+  __Pyx_GIVEREF(__pyx_tuple__46);
+  __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__46, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_ir_cam_pyx, __pyx_n_s_terminate_connection, 78, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -6124,6 +6768,8 @@ static int __Pyx_InitCachedConstants(void) {
 
 static int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  __pyx_int_0 = PyInt_FromLong(0); if (unlikely(!__pyx_int_0)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_3 = PyInt_FromLong(3); if (unlikely(!__pyx_int_3)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_neg_1 = PyInt_FromLong(-1); if (unlikely(!__pyx_int_neg_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
@@ -6300,100 +6946,124 @@ static int __pyx_pymod_exec_ir_cam(PyObject *__pyx_pyinit_module)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "ir_cam.pyx":14
+  /* "ir_cam.pyx":16
  * 
  * 
  * class IrCamera(object):             # <<<<<<<<<<<<<<
  * 
  *     def __init__(self, xml_config_file):
  */
-  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_tuple__28); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_tuple__31); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_tuple__28, __pyx_n_s_IrCamera, __pyx_n_s_IrCamera, (PyObject *) NULL, __pyx_n_s_ir_cam, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_tuple__31, __pyx_n_s_IrCamera, __pyx_n_s_IrCamera, (PyObject *) NULL, __pyx_n_s_ir_cam, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "ir_cam.pyx":16
+  /* "ir_cam.pyx":18
  * class IrCamera(object):
  * 
  *     def __init__(self, xml_config_file):             # <<<<<<<<<<<<<<
  *         self.xml_config = xml_config_file
  * 
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6ir_cam_8IrCamera_1__init__, 0, __pyx_n_s_IrCamera___init, NULL, __pyx_n_s_ir_cam, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6ir_cam_8IrCamera_1__init__, 0, __pyx_n_s_IrCamera___init, NULL, __pyx_n_s_ir_cam, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_init, __pyx_t_3) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_init, __pyx_t_3) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ir_cam.pyx":19
+  /* "ir_cam.pyx":21
  *         self.xml_config = xml_config_file
  * 
  *     def __enter__(self):             # <<<<<<<<<<<<<<
  *         cdef char* null_ptr = <char *> 0 # is there a better way to do this?
  *         retval = evo_irimager_usb_init(self.xml_config, null_ptr, null_ptr)
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6ir_cam_8IrCamera_3__enter__, 0, __pyx_n_s_IrCamera___enter, NULL, __pyx_n_s_ir_cam, __pyx_d, ((PyObject *)__pyx_codeobj__32)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6ir_cam_8IrCamera_3__enter__, 0, __pyx_n_s_IrCamera___enter, NULL, __pyx_n_s_ir_cam, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_enter, __pyx_t_3) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_enter, __pyx_t_3) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ir_cam.pyx":26
+  /* "ir_cam.pyx":28
  *         return self
  * 
  *     def __exit__(self, err_type, value, traceback):             # <<<<<<<<<<<<<<
  *         self.terminate_connection()
  * 
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6ir_cam_8IrCamera_5__exit__, 0, __pyx_n_s_IrCamera___exit, NULL, __pyx_n_s_ir_cam, __pyx_d, ((PyObject *)__pyx_codeobj__34)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6ir_cam_8IrCamera_5__exit__, 0, __pyx_n_s_IrCamera___exit, NULL, __pyx_n_s_ir_cam, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_exit, __pyx_t_3) < 0) __PYX_ERR(0, 26, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_exit, __pyx_t_3) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ir_cam.pyx":29
+  /* "ir_cam.pyx":31
  *         self.terminate_connection()
+ * 
+ *     def set_radiation_parameters(self, emissivity, transmissivity, tAmbient):             # <<<<<<<<<<<<<<
+ *         retval = evo_irimager_set_radiation_parameters(emissivity, transmissivity, tAmbient)
+ *         if retval == -1:
+ */
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6ir_cam_8IrCamera_7set_radiation_parameters, 0, __pyx_n_s_IrCamera_set_radiation_parameter, NULL, __pyx_n_s_ir_cam, __pyx_d, ((PyObject *)__pyx_codeobj__39)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_set_radiation_parameters, __pyx_t_3) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "ir_cam.pyx":36
+ *             raise RuntimeError('Error setting radiation parameters')
+ * 
+ *     def set_thermal_range(self, t_min, t_max):             # <<<<<<<<<<<<<<
+ *         retval = evo_irimager_set_temperature_range(t_min, t_max)
+ *         if retval == -1:
+ */
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6ir_cam_8IrCamera_9set_thermal_range, 0, __pyx_n_s_IrCamera_set_thermal_range, NULL, __pyx_n_s_ir_cam, __pyx_d, ((PyObject *)__pyx_codeobj__41)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 36, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_set_thermal_range, __pyx_t_3) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "ir_cam.pyx":41
+ *             raise RuntimeError('Error setting thermal range')
  * 
  *     def get_frame(self):             # <<<<<<<<<<<<<<
  *         cdef int w_t
  *         cdef int h_t
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6ir_cam_8IrCamera_7get_frame, 0, __pyx_n_s_IrCamera_get_frame, NULL, __pyx_n_s_ir_cam, __pyx_d, ((PyObject *)__pyx_codeobj__36)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6ir_cam_8IrCamera_11get_frame, 0, __pyx_n_s_IrCamera_get_frame, NULL, __pyx_n_s_ir_cam, __pyx_d, ((PyObject *)__pyx_codeobj__43)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_get_frame, __pyx_t_3) < 0) __PYX_ERR(0, 29, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_get_frame, __pyx_t_3) < 0) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ir_cam.pyx":49
- *         return data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
+  /* "ir_cam.pyx":65
+ *         return new_data_t.reshape(h_t, w_t), data_t.reshape(h_t, w_t), data_p.reshape(h_p, w_p, 3)[:,:,::-1]
  * 
  *     def get_palette_frame(self):             # <<<<<<<<<<<<<<
  *         cdef int w
  *         cdef int h
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6ir_cam_8IrCamera_9get_palette_frame, 0, __pyx_n_s_IrCamera_get_palette_frame, NULL, __pyx_n_s_ir_cam, __pyx_d, ((PyObject *)__pyx_codeobj__38)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6ir_cam_8IrCamera_13get_palette_frame, 0, __pyx_n_s_IrCamera_get_palette_frame, NULL, __pyx_n_s_ir_cam, __pyx_d, ((PyObject *)__pyx_codeobj__45)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_get_palette_frame, __pyx_t_3) < 0) __PYX_ERR(0, 49, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_get_palette_frame, __pyx_t_3) < 0) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ir_cam.pyx":62
+  /* "ir_cam.pyx":78
  *         return data.reshape(h, w, 3)[:,:,::-1] # bgr -> rgb
  * 
  *     def terminate_connection(self):             # <<<<<<<<<<<<<<
  *         retval = evo_irimager_terminate()
  *         if retval == -1:
  */
-  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6ir_cam_8IrCamera_11terminate_connection, 0, __pyx_n_s_IrCamera_terminate_connection, NULL, __pyx_n_s_ir_cam, __pyx_d, ((PyObject *)__pyx_codeobj__40)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_CyFunction_NewEx(&__pyx_mdef_6ir_cam_8IrCamera_15terminate_connection, 0, __pyx_n_s_IrCamera_terminate_connection, NULL, __pyx_n_s_ir_cam, __pyx_d, ((PyObject *)__pyx_codeobj__47)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_terminate_connection, __pyx_t_3) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
+  if (PyObject_SetItem(__pyx_t_2, __pyx_n_s_terminate_connection, __pyx_t_3) < 0) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "ir_cam.pyx":14
+  /* "ir_cam.pyx":16
  * 
  * 
  * class IrCamera(object):             # <<<<<<<<<<<<<<
  * 
  *     def __init__(self, xml_config_file):
  */
-  __pyx_t_3 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_IrCamera, __pyx_tuple__28, __pyx_t_2, NULL, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_Py3ClassCreate(__pyx_t_1, __pyx_n_s_IrCamera, __pyx_tuple__31, __pyx_t_2, NULL, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_IrCamera, __pyx_t_3) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_IrCamera, __pyx_t_3) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -7644,6 +8314,162 @@ fail:;
      "Out of bounds on buffer access (axis %d)", axis);
 }
 
+/* PyIntBinop */
+      #if !CYTHON_COMPILING_IN_PYPY
+static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, CYTHON_UNUSED int inplace) {
+    #if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_CheckExact(op1))) {
+        const long b = intval;
+        long x;
+        long a = PyInt_AS_LONG(op1);
+            x = (long)((unsigned long)a + b);
+            if (likely((x^a) >= 0 || (x^b) >= 0))
+                return PyInt_FromLong(x);
+            return PyLong_Type.tp_as_number->nb_add(op1, op2);
+    }
+    #endif
+    #if CYTHON_USE_PYLONG_INTERNALS
+    if (likely(PyLong_CheckExact(op1))) {
+        const long b = intval;
+        long a, x;
+#ifdef HAVE_LONG_LONG
+        const PY_LONG_LONG llb = intval;
+        PY_LONG_LONG lla, llx;
+#endif
+        const digit* digits = ((PyLongObject*)op1)->ob_digit;
+        const Py_ssize_t size = Py_SIZE(op1);
+        if (likely(__Pyx_sst_abs(size) <= 1)) {
+            a = likely(size) ? digits[0] : 0;
+            if (size == -1) a = -a;
+        } else {
+            switch (size) {
+                case -2:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        a = -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                case 2:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        a = (long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                case -3:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        a = -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                case 3:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        a = (long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                case -4:
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                        a = -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                case 4:
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                        a = (long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                default: return PyLong_Type.tp_as_number->nb_add(op1, op2);
+            }
+        }
+                x = a + b;
+            return PyLong_FromLong(x);
+#ifdef HAVE_LONG_LONG
+        long_long:
+                llx = lla + llb;
+            return PyLong_FromLongLong(llx);
+#endif
+        
+        
+    }
+    #endif
+    if (PyFloat_CheckExact(op1)) {
+        const long b = intval;
+        double a = PyFloat_AS_DOUBLE(op1);
+            double result;
+            PyFPE_START_PROTECT("add", return NULL)
+            result = ((double)a) + (double)b;
+            PyFPE_END_PROTECT(result)
+            return PyFloat_FromDouble(result);
+    }
+    return (inplace ? PyNumber_InPlaceAdd : PyNumber_Add)(op1, op2);
+}
+#endif
+
+/* pyobject_as_double */
+      static double __Pyx__PyObject_AsDouble(PyObject* obj) {
+    PyObject* float_value;
+#if !CYTHON_USE_TYPE_SLOTS
+    float_value = PyNumber_Float(obj);  if (0) goto bad;
+#else
+    PyNumberMethods *nb = Py_TYPE(obj)->tp_as_number;
+    if (likely(nb) && likely(nb->nb_float)) {
+        float_value = nb->nb_float(obj);
+        if (likely(float_value) && unlikely(!PyFloat_Check(float_value))) {
+            PyErr_Format(PyExc_TypeError,
+                "__float__ returned non-float (type %.200s)",
+                Py_TYPE(float_value)->tp_name);
+            Py_DECREF(float_value);
+            goto bad;
+        }
+    } else if (PyUnicode_CheckExact(obj) || PyBytes_CheckExact(obj)) {
+#if PY_MAJOR_VERSION >= 3
+        float_value = PyFloat_FromString(obj);
+#else
+        float_value = PyFloat_FromString(obj, 0);
+#endif
+    } else {
+        PyObject* args = PyTuple_New(1);
+        if (unlikely(!args)) goto bad;
+        PyTuple_SET_ITEM(args, 0, obj);
+        float_value = PyObject_Call((PyObject*)&PyFloat_Type, args, 0);
+        PyTuple_SET_ITEM(args, 0, 0);
+        Py_DECREF(args);
+    }
+#endif
+    if (likely(float_value)) {
+        double value = PyFloat_AS_DOUBLE(float_value);
+        Py_DECREF(float_value);
+        return value;
+    }
+bad:
+    return (double)-1;
+}
+
 /* RaiseTooManyValuesToUnpack */
       static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
     PyErr_Format(PyExc_ValueError,
@@ -8823,7 +9649,29 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
 #endif
 
 
-            /* CIntToPy */
+            /* CIntFromPyVerify */
+            #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
+#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
+#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
+    {\
+        func_type value = func_value;\
+        if (sizeof(target_type) < sizeof(func_type)) {\
+            if (unlikely(value != (func_type) (target_type) value)) {\
+                func_type zero = 0;\
+                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
+                    return (target_type) -1;\
+                if (is_unsigned && unlikely(value < zero))\
+                    goto raise_neg_overflow;\
+                else\
+                    goto raise_overflow;\
+            }\
+        }\
+        return (target_type) value;\
+    }
+
+/* CIntToPy */
             static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
     const int neg_one = (int) -1, const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
@@ -9194,28 +10042,6 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
         }
     #endif
 #endif
-
-/* CIntFromPyVerify */
-            #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
-#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
-#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
-    {\
-        func_type value = func_value;\
-        if (sizeof(target_type) < sizeof(func_type)) {\
-            if (unlikely(value != (func_type) (target_type) value)) {\
-                func_type zero = 0;\
-                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
-                    return (target_type) -1;\
-                if (is_unsigned && unlikely(value < zero))\
-                    goto raise_neg_overflow;\
-                else\
-                    goto raise_overflow;\
-            }\
-        }\
-        return (target_type) value;\
-    }
 
 /* CIntToPy */
             static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__NPY_TYPES(enum NPY_TYPES value) {
